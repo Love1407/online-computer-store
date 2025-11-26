@@ -18,7 +18,7 @@ session_start();
    <div class="icons">
     <span>🛒</span>
 
-    <?php if(isset($_SESSION['user'])): ?>
+    <?php if(isset($_SESSION['user_id'])): ?>
 
         <li><a href="/online-computer-store/account.php">My Account</a></li>
         <li><a href="/online-computer-store/logout.php">Logout</a></li>
@@ -35,10 +35,18 @@ session_start();
 
 <nav class="nav-bar">
     <ul>
-        <li><a href="/index.php">Home</a></li>
+         <?php if(isset($_SESSION['user_id'])): ?>
+
+       
+    <?php else: ?>
+
+       <li><a href="/index.php">Home</a></li>
        <li><a href="/">About</a></li>
 <li>Explore Categories</li>        
         <li>Explore Products</li>
+
+    <?php endif; ?>
+       
     </ul>
 </nav>
 
