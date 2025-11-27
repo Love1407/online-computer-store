@@ -10,7 +10,7 @@
 
         <div class="slide active">
             <div class="slide-content">
-                <img src="images/slide1.png" class="slide-img">
+                <img src="assets/images/banner/1.png" class="slide-img">
                 <div class="text-box">
                     <h1>Easy Your Life<br>With Smart Device</h1>
                     <p class="price-text">Only <span>$24.00</span></p>
@@ -21,7 +21,7 @@
 
         <div class="slide">
             <div class="slide-content">
-                <img src="images/slide2.png" class="slide-img">
+                <img src="assets/images/banner/2.png" class="slide-img">
                 <div class="text-box">
                     <h1>Upgrade Your Gadgets</h1>
                     <p class="price-text">Starting from <span>$49.00</span></p>
@@ -32,7 +32,7 @@
 
         <div class="slide">
             <div class="slide-content">
-                <img src="images/slide3.png" class="slide-img">
+                <img src="assets/images/banner/3.png" class="slide-img">
                 <div class="text-box">
                     <h1>Latest Smart Accessories</h1>
                     <p class="price-text">Grab at <span>$19.00</span></p>
@@ -141,25 +141,25 @@
         <button class="white-btn">Shop All Devices</button>
     </div>
 
-    <img class="red-left-img" src="images/headphones.png">
-    <img class="red-right-img" src="images/phones.png">
+    <img class="red-left-img" src="assets/images/banner/5.png">
+    <img class="red-right-img" src="assets/images/banner/5.png">
 </section>
 
 <section class="services">
     <div class="service-box">
-        <img src="images/icon1.png" alt="">
+        <img src="assets/images/banner/1.png" alt="">
         <h3>Free Shipping</h3>
         <p>Capped at $39 per order</p>
     </div>
 
     <div class="service-box">
-        <img src="images/icon2.png" alt="">
+        <img src="assets/images/banner/2.png" alt="">
         <h3>Card Payments</h3>
         <p>12 Months Installments</p>
     </div>
 
     <div class="service-box">
-        <img src="images/icon3.png" alt="">
+        <img src="assets/images/banner/3.png" alt="">
         <h3>Easy Returns</h3>
         <p>Shop With Confidence</p>
     </div>
