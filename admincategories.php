@@ -1,14 +1,13 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/includes/db.php';
 
 $errors = [];
 $success = '';
 $editData = null;
 
-// =========================
-// DELETE CATEGORY
-// =========================
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
@@ -17,9 +16,6 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// =========================
-// EDIT MODE - FETCH CATEGORY
-// =========================
 if (isset($_GET['edit'])) {
     $id = intval($_GET['edit']);
     $stmt = $pdo->prepare("SELECT * FROM categories WHERE id = ?");
@@ -27,9 +23,6 @@ if (isset($_GET['edit'])) {
     $editData = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// =========================
-// ADD / UPDATE CATEGORY
-// =========================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $group_id = isset($_POST['group_id']) ? (int)$_POST['group_id'] : 0;
@@ -44,19 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         try {
-            // Check if group exists
             $stmt = $pdo->prepare("SELECT id FROM groups_h WHERE id = ?");
             $stmt->execute([$group_id]);
             if (!$stmt->fetch()) {
                 $errors[] = "Group does not exist.";
             } else {
                 if (!empty($_POST['id'])) {
-                    // Update
                     $stmt = $pdo->prepare("UPDATE categories SET group_id=?, category_name=? WHERE id=?");
                     $stmt->execute([$group_id, $category_name, $_POST['id']]);
                     $success = "Category updated successfully!";
                 } else {
-                    // Insert
                     $stmt = $pdo->prepare("INSERT INTO categories (group_id, category_name) VALUES (?, ?)");
                     $stmt->execute([$group_id, $category_name]);
                     $success = "Category added successfully!";
@@ -70,9 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// =========================
-// FETCH GROUPS FOR DROPDOWN
-// =========================
 $groups = [];
 try {
     $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name ASC")->fetchAll();
@@ -80,9 +67,6 @@ try {
     $errors[] = "Failed to fetch groups: " . $e->getMessage();
 }
 
-// =========================
-// FETCH ALL CATEGORIES FOR TABLE
-// =========================
 $categories = [];
 try {
     $categories = $pdo->query("
@@ -141,7 +125,6 @@ require_once __DIR__ . '/includes/sidebar.php';
         <?php endif; ?>
     </form>
 
-    <!-- CATEGORY TABLE -->
     <h2 style="margin-top:40px;">Category List</h2>
     <table>
         <tr>

@@ -1,10 +1,9 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/includes/db.php';
 
-// --------------------------
-// AJAX: Fetch categories based on group
-// --------------------------
 if (isset($_GET['fetch_categories'])) {
     $gid = intval($_GET['fetch_categories']);
     $stmt = $pdo->prepare("SELECT id, category_name FROM categories WHERE group_id = ?");
@@ -13,9 +12,6 @@ if (isset($_GET['fetch_categories'])) {
     exit;
 }
 
-// --------------------------
-// AJAX: Fetch subcategories based on category
-// --------------------------
 if (isset($_GET['fetch_subcategories'])) {
     $cid = intval($_GET['fetch_subcategories']);
     $stmt = $pdo->prepare("SELECT id, subcategory_name FROM subcategories WHERE category_id = ?");
@@ -68,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = intval($_POST['stock'] ?? 0);
     $is_on_sale = isset($_POST['is_on_sale']) ? 1 : 0;
 
-    // File upload
 // --------------------------
 // IMAGE UPLOAD HANDLING
 // --------------------------
