@@ -18,7 +18,6 @@
             background: #f4f4f4;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 250px;
             background: #1e1e2d;
@@ -72,7 +71,6 @@
             opacity: 0;
         }
 
-        /* Content */
         .content {
             margin-left: 250px;
             padding: 20px;
@@ -92,7 +90,6 @@
             margin-bottom: 20px;
         }
 
-        /* Responsive */
         @media(max-width: 768px) {
             .sidebar {
                 position: absolute;
@@ -133,7 +130,10 @@ th, td { padding: 10px; text-align: left; }
             <li class="menu-item"><a href="/online-computer-store/adminsubcategories.php"><i>📂</i><span>Sub Categories</span></li></a>
             <li class="menu-item"><a href="/online-computer-store/products.php"><i>📦</i><span>Products</span></li></a>
             <li class="menu-item"><a href="/online-computer-store/userdetails.php"><i>👤</i><span>Users</span></li></a>
+                        <li class="menu-item"><a href="/online-computer-store/admin_order_history.php"><i>👤</i><span>Order History</span></li></a>
+
             <li class="menu-item"><a href="/online-computer-store/logout.php"><i>⚙️</i><span>Logout</span></li></a>
+            
         </ul>
     </div>
 
@@ -142,12 +142,10 @@ th, td { padding: 10px; text-align: left; }
             const sidebar = document.getElementById('sidebar');
             const content = document.getElementById('content');
 
-            // Desktop collapse
             if (window.innerWidth > 768) {
                 sidebar.classList.toggle('collapsed');
                 content.classList.toggle('collapsed-content');
             } else {
-                // Mobile slide-in
                 sidebar.classList.toggle('open');
             }
         }

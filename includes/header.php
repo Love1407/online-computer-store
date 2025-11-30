@@ -48,7 +48,7 @@ if (isset($_SESSION['user_id'])) {
         </a>
 
         <?php if(isset($_SESSION['user_id'])): ?>
-            <li><a href="/online-computer-store/account.php">My Account</a></li>
+            <li><a href="/online-computer-store/order_history.php">My Account</a></li>
             <li><a href="/online-computer-store/logout.php">Logout</a></li>
         <?php else: ?>
             <li><a href="/online-computer-store/login.php">Login</a></li>

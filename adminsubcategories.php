@@ -4,9 +4,6 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . '/includes/db.php';
 
-// =========================
-// DELETE SUBCATEGORY
-// =========================
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $pdo->prepare("DELETE FROM subcategories WHERE id = ?");
@@ -15,9 +12,6 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// =========================
-// AJAX: FETCH CATEGORIES (IN SAME FILE)
-// =========================
 if (isset($_GET['fetch_categories'])) {
     $gid = intval($_GET['fetch_categories']);
     header('Content-Type: application/json');
@@ -27,14 +21,8 @@ if (isset($_GET['fetch_categories'])) {
     exit;
 }
 
-// =========================
-// FETCH GROUPS
-// =========================
 $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
-// =========================
-// EDIT MODE
-// =========================
 $editData = null;
 if (isset($_GET['edit'])) {
     $id = intval($_GET['edit']);
@@ -43,9 +31,6 @@ if (isset($_GET['edit'])) {
     $editData = $stm->fetch(PDO::FETCH_ASSOC);
 }
 
-// =========================
-// ADD / UPDATE LOGIC
-// =========================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $gid  = intval($_POST['group_id']);
@@ -53,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['subcategory_name']);
 
     if (!empty($_POST['id'])) {
-        // UPDATE
         $stmt = $pdo->prepare("UPDATE subcategories SET group_id=?, category_id=?, subcategory_name=? WHERE id=?");
         $stmt->execute([$gid, $cid, $name, $_POST['id']]);
 
@@ -61,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
 
     } else {
-        // INSERT
         $stmt = $pdo->prepare("INSERT INTO subcategories (group_id, category_id, subcategory_name) VALUES (?, ?, ?)");
         $stmt->execute([$gid, $cid, $name]);
 
@@ -70,9 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// =========================
-// LIST SUBCATEGORIES
-// =========================
 $list = $pdo->query("
     SELECT s.*, 
            g.name AS group_name, 
@@ -86,7 +66,6 @@ $list = $pdo->query("
 require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
-<!-- MAIN CONTENT -->
 <div class="content" id="content">
 
     <div class="wrap">
@@ -100,7 +79,6 @@ require_once __DIR__ . '/includes/sidebar.php';
             <input type="hidden" name="id" value="<?= htmlspecialchars($editData['id']) ?>">
         <?php endif; ?>
 
-        <!-- GROUP DROPDOWN -->
         <label>Group</label>
         <select id="group_id" name="group_id" onchange="loadCategories(this.value)" required>
             <option value="">Select Group</option>
@@ -113,18 +91,15 @@ require_once __DIR__ . '/includes/sidebar.php';
             <?php endforeach; ?>
         </select>
 
-        <!-- CATEGORY DROPDOWN -->
         <label>Category</label>
         <select name="category_id" id="category_id" required>
             <option value="">Select Group First</option>
         </select>
 
-        <!-- SUBCATEGORY NAME -->
         <label>Subcategory Name</label>
         <input type="text" name="subcategory_name"
                value="<?= htmlspecialchars($editData['subcategory_name'] ?? '') ?>" required>
 
-        <!-- BUTTONS -->
         <button type="submit"><?= $editData ? "Update" : "Save" ?></button>
         <?php if ($editData): ?>
             <a href="adminsubcategories.php">
@@ -165,10 +140,6 @@ require_once __DIR__ . '/includes/sidebar.php';
 </div>
 
 <script>
-/**
- * Load categories for a given group id.
- * If selectedCat is provided, it will be set after options are loaded.
- */
 function loadCategories(gid, selectedCat = null) {
     const catEl = document.getElementById('category_id');
 
@@ -196,14 +167,11 @@ function loadCategories(gid, selectedCat = null) {
         });
 }
 
-// Wait for DOM ready, then if we're in edit mode, call loadCategories with selected values.
 document.addEventListener('DOMContentLoaded', function () {
     <?php if ($editData): 
-        // ensure integers and safe JS output
         $egid = (int)$editData['group_id'];
         $ecid = (int)$editData['category_id'];
     ?>
-        // call after DOM ready so function and elements exist
         loadCategories(<?= $egid ?>, <?= $ecid ?>);
     <?php endif; ?>
 });

@@ -36,7 +36,6 @@
 </form>
 
 <script>
-// client side validation (basic)
 document.getElementById('signupForm').addEventListener('submit', function(e){
     var name = document.getElementById('name').value.trim();
     var email = document.getElementById('email').value.trim();

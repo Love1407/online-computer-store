@@ -4,19 +4,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/includes/db.php';
 
-// Enable error display for debugging (remove in production)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// =========================
-// SEARCH PARAMETER
-// =========================
 $search = trim($_GET['search'] ?? '');
 
-// =========================
-// FETCH USERS
-// =========================
 try {
     $sql = "SELECT id, name, email, is_admin, created_at FROM users";
     $params = [];
@@ -45,7 +38,6 @@ try {
 
         <h2>Users</h2>
 
-        <!-- Search Form -->
         <form method="get" style="margin-bottom:15px;">
             <input type="text" name="search" placeholder="Search by name, or email" 
                    value="<?= htmlspecialchars($search) ?>" style="width:300px; padding:6px;">
@@ -55,8 +47,6 @@ try {
             <?php endif; ?>
         </form>
 
-        <!-- Users Table -->
-        <!-- Users Table -->
 <table>
     <tr>
         <th>ID</th>

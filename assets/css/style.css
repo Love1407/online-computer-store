@@ -51,9 +51,6 @@ body { background:#fff; }
     display:flex;
     width: auto;
     height:auto;
-    /* align-items:; */
-    /* justify-content:center; */
-    /* gap:50px; */
 }
 
 .slide-img { width:auto; }

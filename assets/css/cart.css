@@ -1,0 +1,385 @@
+.prt-cart-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: "Inter", sans-serif;
+    color: #222;
+    padding: 0 15px;
+}
+
+.prt-cart-heading {
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.prt-cart-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    gap: 20px;
+}
+
+.prt-cart-left {
+    display: flex;
+    gap: 15px;
+}
+
+.prt-cart-img {
+    width: 120px;
+    border-radius: 4px;
+}
+
+.prt-cart-details .prt-brand {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.prt-cart-details .prt-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 3px;
+}
+
+.prt-cart-details .prt-price {
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.prt-cart-details .prt-color {
+    font-size: 13px;
+    margin-top: 5px;
+    opacity: 0.7;
+}
+
+.prt-cart-qty {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    width: 120px;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.prt-qty-btn {
+    text-decoration: none;
+    font-size: 20px;
+    color: #444;
+    padding: 0 10px;
+    position: relative;
+    transition: transform 0.1s ease;
+}
+
+.prt-qty-btn:active {
+    transform: scale(0.8);
+}
+
+.prt-delete-btn {
+    font-size: 18px;
+    color: #c3876b;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.prt-delete-btn:hover {
+    transform: scale(1.2);
+}
+
+.prt-cart-right-price {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.prt-bottom-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.prt-order-box {
+    width: 60%;
+}
+
+.prt-order-box textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 6px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.prt-summary {
+    width: 35%;
+    text-align: right;
+}
+
+.prt-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+.prt-tax-note {
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 5px 0 20px;
+}
+
+.prt-checkout-btn {
+    background: #c78a6b;
+    color: #fff;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.prt-checkout-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.prt-checkout-btn:active {
+    transform: scale(0.96);
+}
+
+.prt-checkout-btn .ripple {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleEffect 0.6s linear;
+}
+
+@keyframes rippleEffect {
+    to {
+        transform: scale(18);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .prt-cart-item {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    .prt-cart-left {
+        flex-direction: row;
+    }
+
+    .prt-cart-img {
+        width: 90px;
+    }
+
+    .prt-cart-qty,
+    .prt-delete-btn {
+        margin-top: 10px;
+    }
+
+    .prt-cart-right-price {
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    .prt-bottom-section {
+        flex-direction: column;
+    }
+
+    .prt-order-box,
+    .prt-summary {
+        width: 100%;
+        text-align: left;
+    }
+
+    .prt-summary-row {
+        justify-content: space-between;
+    }
+}
+
+.prt-skeleton {
+    animation: shimmer 1.6s infinite linear;
+    background: linear-gradient(
+        90deg,
+        #e3e3e3 0%,
+        #f5f5f5 50%,
+        #e3e3e3 100%
+    );
+    background-size: 200% 100%;
+    border-radius: 6px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.prt-skeleton-img {
+    width: 120px;
+    height: 120px;
+}
+
+.prt-skeleton-line {
+    height: 15px;
+    width: 70%;
+    margin-top: 8px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.ckt-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 30px auto;
+    gap: 25px;
+}
+
+.ckt-left {
+    width: 65%;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.ckt-heading {
+    font-size: 20px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.ckt-form-group {
+    margin-bottom: 15px;
+}
+
+.ckt-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.ckt-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.ckt-3col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+.ckt-error {
+    border-color: red !important;
+}
+
+.ckt-error-text {
+    color: red;
+    font-size: 12px;
+}
+
+.ckt-shipping-box {
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.ckt-shipping-box.ckt-selected {
+    border-color: #1a73e8;
+    background: #e8f0fe;
+}
+
+.ckt-pay-btn {
+    width: 100%;
+    background: #1a73e8;
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.ckt-right {
+    width: 35%;
+}
+
+.ckt-summary-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.ckt-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+}
+
+.ckt-summary-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.ckt-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.ckt-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+@media(max-width: 900px) {
+    .ckt-container {
+        flex-direction: column;
+    }
+
+    .ckt-left, .ckt-right {
+        width: 100%;
+    }
+}

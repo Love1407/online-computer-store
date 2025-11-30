@@ -20,9 +20,6 @@ if (isset($_GET['fetch_subcategories'])) {
     exit;
 }
 
-// --------------------------
-// DELETE PRODUCT
-// --------------------------
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
@@ -31,9 +28,6 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// --------------------------
-// EDIT PRODUCT
-// --------------------------
 $editData = null;
 if (isset($_GET['edit'])) {
     $id = intval($_GET['edit']);
@@ -42,14 +36,8 @@ if (isset($_GET['edit'])) {
     $editData = $stmt->fetch();
 }
 
-// --------------------------
-// FETCH GROUPS
-// --------------------------
 $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name")->fetchAll();
 
-// --------------------------
-// ADD / UPDATE PRODUCT
-// --------------------------
 $errors = [];
 $success = '';
 
@@ -64,32 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = intval($_POST['stock'] ?? 0);
     $is_on_sale = isset($_POST['is_on_sale']) ? 1 : 0;
 
-// --------------------------
-// IMAGE UPLOAD HANDLING
-// --------------------------
-$image_url = $editData['image_url'] ?? ''; // keep existing image if editing
+$image_url = $editData['image_url'] ?? '';
 
 if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] != UPLOAD_ERR_NO_FILE) {
 
     $file = $_FILES['image_file'];
     $allowed = ['jpg','jpeg','png','gif'];
 
-    // Check for upload errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
         $errors[] = "Error during file upload. Error code: " . $file['error'];
     } else {
-        // Check extension
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($ext, $allowed)) {
             $errors[] = "Invalid image type. Allowed: jpg, jpeg, png, gif.";
         }
 
-        // Check file size (max 2MB)
         if ($file['size'] > 2*1024*1024) {
             $errors[] = "Image size must be under 2MB.";
         }
 
-        // Create uploads folder if not exists
         $uploadDir = __DIR__ . '/uploads';
         if (!is_dir($uploadDir)) {
             if (!mkdir($uploadDir, 0777, true)) {
@@ -97,13 +78,12 @@ if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] != UPLOAD_ERR
             }
         }
 
-        // Move uploaded file
         if (empty($errors)) {
             $filename = uniqid('img_') . '.' . $ext;
             $target = $uploadDir . '/' . $filename;
 
             if (move_uploaded_file($file['tmp_name'], $target)) {
-                $image_url = 'uploads/' . $filename; // save relative path in DB
+                $image_url = 'uploads/' . $filename;
             } else {
                 $errors[] = "Failed to move uploaded file. Check folder permissions.";
             }
@@ -111,8 +91,6 @@ if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] != UPLOAD_ERR
     }
 }
 
-
-    // Validations
     if ($group_id <= 0) $errors[] = "Please select a group.";
     if ($category_id <= 0) $errors[] = "Please select a category.";
     if ($product_name === '') $errors[] = "Product name cannot be empty.";
@@ -146,9 +124,6 @@ if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] != UPLOAD_ERR
     }
 }
 
-// --------------------------
-// FETCH ALL PRODUCTS
-// --------------------------
 $list = $pdo->query("
     SELECT p.*, g.name AS group_name, c.category_name, s.subcategory_name
     FROM products p
@@ -326,7 +301,6 @@ function loadSubcategories(categoryId, selectedSub=null){
     });
 }
 
-// Preload in edit mode
 <?php if($editData): ?>
 loadCategories(<?= $editData['group_id'] ?>, <?= $editData['category_id'] ?>);
 loadSubcategories(<?= $editData['category_id'] ?>, <?= $editData['subcategory_id'] ?? 'null' ?>);
