@@ -77,7 +77,6 @@ if (isset($_GET['fetch_products'])) {
         $totalPages = max(1, (int)ceil($total / $limit));
 
         switch ($sort) {
-            case 'price_asc':
             case 'price_asc': $order = "ORDER BY COALESCE(p.deal_price, p.original_price) ASC"; break;
             case 'price_desc': $order = "ORDER BY COALESCE(p.deal_price, p.original_price) DESC"; break;
             default: $order = "ORDER BY p.created_at DESC";
@@ -118,109 +117,87 @@ $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name")->fetchAll(P
 
 require_once __DIR__ . '/includes/header.php';
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Explore Products</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-body { font-family: Arial, sans-serif; background:#f6f7fb; margin:0; padding:0; color:#222; }
-.container { display:flex; gap:18px; padding:18px; max-width:1200px; margin:0 auto; }
-.sidebar { width:300px; background:#fff; padding:18px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
-.main { flex:1; }
-.filters label { font-weight:600; display:block; margin-top:10px; }
-.form-row { display:flex; gap:8px; margin-top:8px; }
-.card-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:16px; }
-.card { background:#fff; border-radius:8px; padding:12px; box-shadow:0 6px 18px rgba(0,0,0,0.04); display:flex; flex-direction:column; min-height:330px; }
-.card img { width:100%; height:160px; object-fit:cover; border-radius:6px; background:#f2f2f2; }
-.card h4 { margin:8px 0 6px; font-size:1rem; }
-.price { font-weight:700; }
-.old-price { text-decoration:line-through; color:#888; margin-left:8px; font-weight:500; }
-.badge { background:#ff4d4f; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.8rem; display:inline-block; }
-.controls { display:flex; gap:8px; margin-top:auto; align-items:center; }
-.btn { padding:8px 10px; border:0; border-radius:6px; cursor:pointer; }
-.btn-primary { background:#007bff; color:#fff; }
-.btn-outline { background:#fff; border:1px solid #ddd; color:#333; }
-.search-row { display:flex; gap:8px; margin-bottom:12px; align-items:center; }
-.pager { margin-top:18px; text-align:center; }
-.pager button { margin:0 4px; padding:6px 10px; border-radius:6px; border:1px solid #ddd; background:#fff; cursor:pointer; }
-.pager button.active { background:#007bff;color:#fff;border-color:#007bff;}
-.quickview-modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); width:92%; max-width:900px; background:#fff; z-index:9999; padding:16px; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,0.3); display:none; }
-.modal-close { float:right; cursor:pointer; font-size:18px; }
-.cart-count { background:#ff4d4f; color:#fff; padding:2px 8px; border-radius:20px; font-weight:700; margin-left:8px; }
-@media (max-width: 900px) { .container{flex-direction:column} .sidebar{width:100%} .card{min-height:auto} }
-</style>
-</head>
-<body>
-<section class="category-box">
-<div class="container">
 
-    <aside class="sidebar" aria-label="Filters">
-        <h3 style="margin:0 0 10px 0;">Filters</h3>
+<link rel="stylesheet" href="assets/css/products.css">
 
-        <div class="filters">
-            <div class="search-row">
-                <input id="searchInput" type="text" placeholder="Search product..." style="flex:1;padding:8px;border-radius:6px;border:1px solid #ddd;">
-                <button id="searchBtn" class="btn btn-primary">Search</button>
-            </div>
+<div class="prdct-wrapper">
+    <div class="prdct-container">
 
-            <label>Group</label>
-            <select id="filterGroup" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;">
-                <option value="">All groups</option>
-                <?php foreach ($groups as $g): ?>
-                    <option value="<?= $g['id'] ?>"><?= htmlspecialchars($g['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
+        <aside class="prdct-sidebar" aria-label="Filters">
+            <h3 class="prdct-sidebar-title">Filters</h3>
 
-            <label>Category</label>
-            <select id="filterCategory" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;">
-                <option value="">All categories</option>
-            </select>
-
-            <label>Subcategory</label>
-            <select id="filterSubcategory" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;">
-                <option value="">All subcategories</option>
-            </select>
-
-            <div class="form-row" style="margin-top:12px;">
-                <div style="flex:1">
-                    <label style="font-weight:600">Min price</label>
-                    <input id="minPrice" type="number" placeholder="0" style="width:100%;padding:6px;border-radius:6px;border:1px solid #ddd;">
+            <div class="prdct-filters">
+                <div class="prdct-search-row">
+                    <input id="searchInput" type="text" placeholder="Search product..." class="prdct-search-input">
+                    <button id="searchBtn" class="prdct-search-btn">Search</button>
                 </div>
-                <div style="flex:1">
-                    <label style="font-weight:600">Max price</label>
-                    <input id="maxPrice" type="number" placeholder="99999" style="width:100%;padding:6px;border-radius:6px;border:1px solid #ddd;">
+
+                <div class="prdct-filter-group">
+                    <label class="prdct-filter-label">Group</label>
+                    <select id="filterGroup" class="prdct-filter-select">
+                        <option value="">All groups</option>
+                        <?php foreach ($groups as $g): ?>
+                            <option value="<?= $g['id'] ?>"><?= htmlspecialchars($g['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
+
+                <div class="prdct-filter-group">
+                    <label class="prdct-filter-label">Category</label>
+                    <select id="filterCategory" class="prdct-filter-select">
+                        <option value="">All categories</option>
+                    </select>
+                </div>
+
+                <div class="prdct-filter-group">
+                    <label class="prdct-filter-label">Subcategory</label>
+                    <select id="filterSubcategory" class="prdct-filter-select">
+                        <option value="">All subcategories</option>
+                    </select>
+                </div>
+
+                <div class="prdct-price-row">
+                    <div class="prdct-price-group">
+                        <label class="prdct-price-label">Min price</label>
+                        <input id="minPrice" type="number" placeholder="0" class="prdct-filter-input">
+                    </div>
+                    <div class="prdct-price-group">
+                        <label class="prdct-price-label">Max price</label>
+                        <input id="maxPrice" type="number" placeholder="99999" class="prdct-filter-input">
+                    </div>
+                </div>
+
+                <label class="prdct-checkbox-label">
+                    <input id="saleOnly" type="checkbox" class="prdct-checkbox"> On Sale only
+                </label>
+
+                <div class="prdct-filter-group">
+                    <label class="prdct-filter-label">Sort</label>
+                    <select id="sortBy" class="prdct-filter-select">
+                        <option value="new">Newest</option>
+                        <option value="price_asc">Price: Low → High</option>
+                        <option value="price_desc">Price: High → Low</option>
+                    </select>
+                </div>
+
+                <button id="applyFilters" class="prdct-apply-btn">Apply Filters</button>
+                <button id="resetFilters" class="prdct-reset-btn">Reset All</button>
+
+                <hr class="prdct-divider">
             </div>
+        </aside>
 
-            <label style="margin-top:10px;"><input id="saleOnly" type="checkbox"> On Sale only</label>
-
-            <label style="margin-top:10px;">Sort</label>
-            <select id="sortBy" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;">
-                <option value="new">Newest</option>
-                <option value="price_asc">Price: Low → High</option>
-                <option value="price_desc">Price: High → Low</option>
-            </select>
-
-            <button id="applyFilters" class="btn btn-primary" style="margin-top:12px;width:100%;">Apply</button>
-            <button id="resetFilters" class="btn btn-outline" style="margin-top:8px;width:100%;">Reset</button>
-
-            <hr style="margin:12px 0;">
-           
-        </div>
-    </aside>
-
-    <main class="main" aria-live="polite">
-        <div id="productsContainer" class="card-grid"></div>
-        <div class="pager" id="pager" role="navigation" aria-label="Pagination"></div>
-    </main>
+        <main class="prdct-main" aria-live="polite">
+            <div id="productsContainer" class="prdct-grid"></div>
+            <div class="prdct-pager" id="pager" role="navigation" aria-label="Pagination"></div>
+        </main>
+    </div>
 </div>
-</section>
 
-<div id="quickView" class="quickview-modal" aria-hidden="true">
-    <span class="modal-close" onclick="closeQuickView()">✕</span>
-    <div id="quickViewContent"></div>
+<div class="prdct-modal-overlay" id="modalOverlay" onclick="closeQuickView()"></div>
+<div id="quickView" class="prdct-modal" aria-hidden="true">
+    <button class="prdct-modal-close" onclick="closeQuickView()">✕</button>
+    <div id="quickViewContent" class="prdct-modal-content"></div>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
@@ -249,6 +226,7 @@ const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const applyBtn = document.getElementById('applyFilters');
 const resetBtn = document.getElementById('resetFilters');
+const modalOverlay = document.getElementById('modalOverlay');
 
 function fetchAndRender(page = 1) {
     state.page = page;
@@ -267,13 +245,13 @@ function fetchAndRender(page = 1) {
         sort: state.sort
     });
 
-    productsContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center">Loading...</p>';
+    productsContainer.innerHTML = '<p class="prdct-loading">Loading products...</p>';
 
     fetch(apiUrl + '?' + params.toString())
     .then(res => res.json())
     .then(data => {
         if (!data.ok) {
-            productsContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center">Error loading products</p>';
+            productsContainer.innerHTML = '<p class="prdct-error">Error loading products</p>';
             console.error(data.error || 'Unknown error');
             return;
         }
@@ -282,13 +260,13 @@ function fetchAndRender(page = 1) {
     })
     .catch(err => {
         console.error(err);
-        productsContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center">Error loading products</p>';
+        productsContainer.innerHTML = '<p class="prdct-error">Error loading products</p>';
     });
 }
 
 function renderProducts(items) {
     if (!items || items.length === 0) {
-        productsContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center">No products found.</p>';
+        productsContainer.innerHTML = '<p class="prdct-no-results">No products found.</p>';
         return;
     }
 
@@ -297,24 +275,23 @@ function renderProducts(items) {
         const oldPrice = p.deal_price ? parseFloat(p.original_price).toFixed(2) : null;
         const img = p.image_url ? p.image_url : 'assets/placeholder.png';
         return `
-            <div class="card" data-id="${p.id}">
-                <img src="${img}" alt="${escapeHtml(p.product_name)}">A
-                <h4>${escapeHtml(p.product_name)}</h4>
-                <div>
-                    <span class="price">₹${price}</span>
-                    ${ oldPrice ? `<span class="old-price">₹${oldPrice}</span>` : '' }
+            <div class="prdct-card" data-id="${p.id}">
+                <img src="${img}" alt="${escapeHtml(p.product_name)}" class="prdct-card-img">
+                <h4 class="prdct-card-title">${escapeHtml(p.product_name)}</h4>
+                <div class="prdct-card-price-wrapper">
+                    <span class="prdct-card-price">₹${price}</span>
+                    ${oldPrice ? `<span class="prdct-card-old-price">₹${oldPrice}</span>` : ''}
                 </div>
-                <div style="margin-top:6px;color:#666;font-size:0.9rem;">${escapeHtml(p.group_name || '')} › ${escapeHtml(p.category_name || '')} › ${escapeHtml(p.subcategory_name || '')}</div>
-                ${ p.is_on_sale ? '<div class="badge" style="margin-top:8px">SALE</div>' : '' }
-               <div class="controls" style="margin-top:12px;">
-    <button class="btn btn-outline" onclick="openQuickView(${p.id})">Quick View</button>
-    <form method="post" action="/online-computer-store/add_to_cart.php" class="addcart-form">
-        <input type="hidden" name="product_id" value="${p.id}">
-        <input type="hidden" name="quantity" value="1">
-        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-    </form>
-</div>
-
+                <div class="prdct-card-meta">${escapeHtml(p.group_name || '')} › ${escapeHtml(p.category_name || '')} › ${escapeHtml(p.subcategory_name || '')}</div>
+                ${p.is_on_sale ? '<div class="prdct-card-badge">SALE</div>' : ''}
+                <div class="prdct-card-controls">
+                    <button class="prdct-btn-view" onclick="openQuickView(${p.id})">Quick View</button>
+                    <form method="post" action="/online-computer-store/add_to_cart.php" class="prdct-addcart-form">
+                        <input type="hidden" name="product_id" value="${p.id}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="prdct-btn-cart">Add to Cart</button>
+                    </form>
+                </div>
             </div>
         `;
     }).join('');
@@ -323,22 +300,24 @@ function renderProducts(items) {
 function renderPager(page, totalPages) {
     if (!totalPages || totalPages <= 1) { pager.innerHTML = ''; return; }
     let html = '';
-    if (page > 1) html += `<button onclick="fetchAndRender(${page-1})">&laquo; Prev</button>`;
+    if (page > 1) html += `<button class="prdct-pager-btn" onclick="fetchAndRender(${page-1})">&laquo; Prev</button>`;
     const maxButtons = 7;
     let start = Math.max(1, page - Math.floor(maxButtons/2));
     let end = start + maxButtons - 1;
     if (end > totalPages) { end = totalPages; start = Math.max(1, end - maxButtons + 1); }
 
     for (let i = start; i <= end; i++) {
-        if (i === page) html += `<button class="active" onclick="fetchAndRender(${i})">${i}</button>`;
-        else html += `<button onclick="fetchAndRender(${i})">${i}</button>`;
+        const activeClass = i === page ? 'prdct-pager-active' : '';
+        html += `<button class="prdct-pager-btn ${activeClass}" onclick="fetchAndRender(${i})">${i}</button>`;
     }
 
-    if (page < totalPages) html += `<button onclick="fetchAndRender(${page+1})">Next &raquo;</button>`;
+    if (page < totalPages) html += `<button class="prdct-pager-btn" onclick="fetchAndRender(${page+1})">Next &raquo;</button>`;
     pager.innerHTML = html;
 }
 
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
+function escapeHtml(s){ 
+    return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); 
+}
 
 filterGroup.addEventListener('change', () => {
     state.group = filterGroup.value;
@@ -386,34 +365,40 @@ function openQuickView(id) {
             const p = d.product;
             const img = p.image_url ? p.image_url : 'assets/placeholder.png';
             document.getElementById('quickViewContent').innerHTML = `
-                <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                    <div style="flex:1;min-width:280px">
-                        <img src="${img}" style="width:100%;height:320px;object-fit:cover;border-radius:6px">
-                    </div>
-                    <div style="flex:1;min-width:280px">
-                        <h2>${escapeHtml(p.product_name)}</h2>
-                        <p style="color:#666">${escapeHtml(p.category_name || '')} • ${escapeHtml(p.group_name || '')} • ${escapeHtml(p.subcategory_name || '')}</p>
-                        <p style="font-weight:700">Price: ₹${(p.deal_price || p.original_price).toFixed ? (p.deal_price || p.original_price).toFixed(2) : (p.deal_price || p.original_price)}</p>
-                        <p>${escapeHtml(p.description || '')}</p>
-                        <p>Stock: ${p.stock}</p>
-                        <div style="margin-top:12px;">
-<form method="post" action="/online-computer-store/add_to_cart.php" class="addcart-form">
-    <input type="hidden" name="product_id" value="${p.id}">
-    <input type="hidden" name="quantity" value="1">
-    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-</form>
-
-                            <button class="btn btn-outline" onclick="closeQuickView()">Close</button>
-                        </div>
-
+                <div class="prdct-modal-img-wrapper">
+                    <img src="${img}" class="prdct-modal-img" alt="${escapeHtml(p.product_name)}">
+                </div>
+                <div class="prdct-modal-details">
+                    <h2 class="prdct-modal-title">${escapeHtml(p.product_name)}</h2>
+                    <p class="prdct-modal-meta">${escapeHtml(p.category_name || '')} • ${escapeHtml(p.group_name || '')} • ${escapeHtml(p.subcategory_name || '')}</p>
+                    <p class="prdct-modal-price">₹${(p.deal_price || p.original_price).toFixed ? (p.deal_price || p.original_price).toFixed(2) : (p.deal_price || p.original_price)}</p>
+                    <p class="prdct-modal-description">${escapeHtml(p.description || 'No description available.')}</p>
+                    <p class="prdct-modal-stock">Stock: ${p.stock} units available</p>
+                    <div class="prdct-modal-actions">
+                        <form method="post" action="/online-computer-store/add_to_cart.php" class="prdct-addcart-form">
+                            <input type="hidden" name="product_id" value="${p.id}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="prdct-modal-btn-add">Add to Cart</button>
+                        </form>
+                        <button class="prdct-modal-btn-close" onclick="closeQuickView()">Close</button>
                     </div>
                 </div>
             `;
             openModal();
         });
 }
-function openModal(){ document.getElementById('quickView').style.display = 'block'; document.getElementById('quickView').setAttribute('aria-hidden','false'); }
-function closeQuickView(){ document.getElementById('quickView').style.display = 'none'; document.getElementById('quickView').setAttribute('aria-hidden','true'); }
+
+function openModal(){ 
+    document.getElementById('quickView').classList.add('prdct-modal-open');
+    modalOverlay.classList.add('prdct-modal-open');
+    document.getElementById('quickView').setAttribute('aria-hidden','false'); 
+}
+
+function closeQuickView(){ 
+    document.getElementById('quickView').classList.remove('prdct-modal-open');
+    modalOverlay.classList.remove('prdct-modal-open');
+    document.getElementById('quickView').setAttribute('aria-hidden','true'); 
+}
 
 applyBtn.addEventListener('click', () => {
     state.search = searchInput.value.trim();
@@ -459,5 +444,3 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAndRender(1);
 });
 </script>
-</body>
-</html>
