@@ -87,51 +87,6 @@
     </div>
 </section>
 
-
-<section class="featured">
-    <h2>Featured Offers</h2>
-    <p class="sub-text">There are many variations of Lorem Ipsum available</p>
-
-    <div class="featured-grid">
-
-        <div class="offer-card">
-            <div class="offer-left">
-                <img src="images/watch.png" alt="">
-            </div>
-            <div class="offer-right">
-                <span class="end-tag">End In: 0 : 00 : 00</span>
-                <h3>Ladies Smart Watch</h3>
-                <p class="old-price">$48.50 <span class="new-price">$38.50</span></p>
-
-                <ul>
-                    <li><b>Predecessor:</b> None</li>
-                    <li><b>Support Type:</b> Neutral</li>
-                    <li><b>Cushioning:</b> High Energizing</li>
-                    <li><b>Total Weight:</b> 300gm</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="offer-card">
-            <div class="offer-left">
-                <img src="images/phone.png" alt="">
-            </div>
-            <div class="offer-right">
-                <span class="end-tag">End In: 0 : 00 : 00</span>
-                <h3>Smart Phone</h3>
-                <p class="old-price">$48.50 <span class="new-price">$38.50</span></p>
-
-                <ul>
-                    <li><b>Predecessor:</b> None</li>
-                    <li><b>Support Type:</b> Neutral</li>
-                    <li><b>Cushioning:</b> High Energizing</li>
-                    <li><b>Total Weight:</b> 300gm</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="red-banner">
     <div class="red-content">
         <h2>Smart Fashion</h2>
