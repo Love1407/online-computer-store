@@ -20,6 +20,12 @@ if (isset($_GET['fetch_subcategories'])) {
     exit;
 }
 
+$success = '';
+if (isset($_GET['msg'])) {
+    $msg = $_GET['msg'];
+    if ($msg === 'deleted') $success = 'Product deleted successfully!';
+}
+
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
@@ -39,7 +45,6 @@ if (isset($_GET['edit'])) {
 $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name")->fetchAll();
 
 $errors = [];
-$success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $group_id = intval($_POST['group_id'] ?? 0);
@@ -52,44 +57,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = intval($_POST['stock'] ?? 0);
     $is_on_sale = isset($_POST['is_on_sale']) ? 1 : 0;
 
-$image_url = $editData['image_url'] ?? '';
+    $image_url = $editData['image_url'] ?? '';
 
-if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] != UPLOAD_ERR_NO_FILE) {
+    if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] != UPLOAD_ERR_NO_FILE) {
+        $file = $_FILES['image_file'];
+        $allowed = ['jpg','jpeg','png','gif','webp'];
 
-    $file = $_FILES['image_file'];
-    $allowed = ['jpg','jpeg','png','gif'];
-
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        $errors[] = "Error during file upload. Error code: " . $file['error'];
-    } else {
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        if (!in_array($ext, $allowed)) {
-            $errors[] = "Invalid image type. Allowed: jpg, jpeg, png, gif.";
-        }
-
-        if ($file['size'] > 2*1024*1024) {
-            $errors[] = "Image size must be under 2MB.";
-        }
-
-        $uploadDir = __DIR__ . '/uploads';
-        if (!is_dir($uploadDir)) {
-            if (!mkdir($uploadDir, 0777, true)) {
-                $errors[] = "Failed to create uploads directory. Check folder permissions.";
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $errors[] = "Error during file upload. Error code: " . $file['error'];
+        } else {
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, $allowed)) {
+                $errors[] = "Invalid image type. Allowed: jpg, jpeg, png, gif, webp.";
             }
-        }
 
-        if (empty($errors)) {
-            $filename = uniqid('img_') . '.' . $ext;
-            $target = $uploadDir . '/' . $filename;
+            if ($file['size'] > 2*1024*1024) {
+                $errors[] = "Image size must be under 2MB.";
+            }
 
-            if (move_uploaded_file($file['tmp_name'], $target)) {
-                $image_url = 'uploads/' . $filename;
-            } else {
-                $errors[] = "Failed to move uploaded file. Check folder permissions.";
+            $uploadDir = __DIR__ . '/uploads';
+            if (!is_dir($uploadDir)) {
+                if (!mkdir($uploadDir, 0777, true)) {
+                    $errors[] = "Failed to create uploads directory.";
+                }
+            }
+
+            if (empty($errors)) {
+                $filename = uniqid('img_') . '.' . $ext;
+                $target = $uploadDir . '/' . $filename;
+
+                if (move_uploaded_file($file['tmp_name'], $target)) {
+                    $image_url = 'uploads/' . $filename;
+                } else {
+                    $errors[] = "Failed to move uploaded file.";
+                }
             }
         }
     }
-}
 
     if ($group_id <= 0) $errors[] = "Please select a group.";
     if ($category_id <= 0) $errors[] = "Please select a category.";
@@ -132,155 +136,721 @@ $list = $pdo->query("
     LEFT JOIN subcategories s ON p.subcategory_id = s.id
     ORDER BY p.id DESC
 ")->fetchAll();
+
+require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
-<?php require_once __DIR__ . '/includes/sidebar.php'; ?>
+<div class="adm-content" id="content">
+    <div class="adm-page-header">
+        <h1 class="adm-page-title">Product Management</h1>
+        <div class="adm-breadcrumb">
+            <a href="admin.php">Dashboard</a>
+            <span>/</span>
+            <span>Products</span>
+        </div>
+    </div>
 
-<div class="content" id="content">
-<div class="wrap">
+    <?php if (!empty($errors) || $success): ?>
+        <div class="adm-messages">
+            <?php foreach ($errors as $err): ?>
+                <div class="adm-alert adm-alert-danger">
+                    <span class="adm-alert-icon">⚠️</span>
+                    <span><?= htmlspecialchars($err) ?></span>
+                </div>
+            <?php endforeach; ?>
 
-<h2><?= $editData ? "Edit" : "Add" ?> Product</h2>
-
-<div class="messages">
-<?php foreach ($errors as $err): ?>
-    <div class="error"><?= htmlspecialchars($err) ?></div>
-<?php endforeach; ?>
-<?php if ($success): ?>
-    <div class="success"><?= htmlspecialchars($success) ?></div>
-<?php endif; ?>
-</div>
-
-<form method="POST" enctype="multipart/form-data">
-    <?php if ($editData): ?>
-        <input type="hidden" name="id" value="<?= $editData['id'] ?>">
+            <?php if ($success): ?>
+                <div class="adm-alert adm-alert-success">
+                    <span class="adm-alert-icon">✓</span>
+                    <span><?= htmlspecialchars($success) ?></span>
+                </div>
+            <?php endif; ?>
+        </div>
     <?php endif; ?>
 
-    <label>Group</label>
-    <select name="group_id" id="group_id" onchange="loadCategories(this.value)" required>
-        <option value="">-- Select Group --</option>
-        <?php foreach ($groups as $g): ?>
-            <option value="<?= $g['id'] ?>" <?= ($editData && $editData['group_id']==$g['id'])?'selected':'' ?>><?= htmlspecialchars($g['name']) ?></option>
-        <?php endforeach; ?>
-    </select>
+    <div class="adm-card adm-form-card">
+        <div class="adm-card-header">
+            <h3 class="adm-card-title">
+                <?= $editData ? "✏️ Edit Product" : "➕ Add New Product" ?>
+            </h3>
+            <?php if ($editData): ?>
+                <a href="products.php" class="adm-btn adm-btn-sm adm-btn-secondary">
+                    ← Back to Add
+                </a>
+            <?php endif; ?>
+        </div>
 
-    <label>Category</label>
-    <select name="category_id" id="category_id" onchange="loadSubcategories(this.value)" required>
-        <option value="">Select Group First</option>
-    </select>
+        <form method="POST" enctype="multipart/form-data" class="adm-form">
+            <?php if ($editData): ?>
+                <input type="hidden" name="id" value="<?= $editData['id'] ?>">
+            <?php endif; ?>
 
-    <label>Subcategory</label>
-    <select name="subcategory_id" id="subcategory_id">
-        <option value="">Optional</option>
-    </select>
+            <div class="adm-form-section-title">
+                <span class="adm-section-icon">📂</span>
+                <span>Product Classification</span>
+            </div>
 
-    <label>Product Name</label>
-    <input type="text" name="product_name" value="<?= $editData['product_name'] ?? '' ?>" required>
+            <div class="adm-form-row">
+                <div class="adm-form-group">
+                    <label for="group_id" class="adm-label">
+                        <span class="adm-label-text">Group</span>
+                        <span class="adm-label-required">*</span>
+                    </label>
+                    <select name="group_id" id="group_id" class="adm-select" onchange="loadCategories(this.value)" required>
+                        <option value="">-- Select Group --</option>
+                        <?php foreach ($groups as $g): ?>
+                            <option value="<?= $g['id'] ?>" <?= ($editData && $editData['group_id']==$g['id'])?'selected':'' ?>><?= htmlspecialchars($g['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-    <label>Description</label>
-    <textarea name="description"><?= $editData['description'] ?? '' ?></textarea>
+                <div class="adm-form-group">
+                    <label for="category_id" class="adm-label">
+                        <span class="adm-label-text">Category</span>
+                        <span class="adm-label-required">*</span>
+                    </label>
+                    <select name="category_id" id="category_id" class="adm-select" onchange="loadSubcategories(this.value)" required>
+                        <option value="">Select Group First</option>
+                    </select>
+                </div>
 
-    <label>Original Price</label>
-    <input type="text" name="original_price" value="<?= $editData['original_price'] ?? '' ?>" required>
+                <div class="adm-form-group">
+                    <label for="subcategory_id" class="adm-label">
+                        <span class="adm-label-text">Subcategory</span>
+                        <span class="adm-label-optional">(Optional)</span>
+                    </label>
+                    <select name="subcategory_id" id="subcategory_id" class="adm-select">
+                        <option value="">-- None --</option>
+                    </select>
+                </div>
+            </div>
 
-    <label>Deal Price</label>
-    <input type="text" name="deal_price" value="<?= $editData['deal_price'] ?? '' ?>">
+            <div class="adm-form-section-title">
+                <span class="adm-section-icon">📝</span>
+                <span>Product Details</span>
+            </div>
 
-    <label>Product Image</label>
-    <input type="file" name="image_file" accept="image/*" onchange="previewImage(event)">
-    <br>
-    <img id="image_preview" src="<?= $editData['image_url'] ?? '' ?>" style="max-width:150px; margin-top:10px; <?= empty($editData['image_url'])?'display:none;':'' ?>">
+            <div class="adm-form-row">
+                <div class="adm-form-group adm-form-group-full">
+                    <label for="product_name" class="adm-label">
+                        <span class="adm-label-text">Product Name</span>
+                        <span class="adm-label-required">*</span>
+                    </label>
+                    <input type="text" name="product_name" id="product_name" class="adm-input" value="<?= htmlspecialchars($editData['product_name'] ?? '') ?>" placeholder="Enter product name" required>
+                </div>
+            </div>
 
-    <label>Stock</label>
-    <input type="number" name="stock" value="<?= $editData['stock'] ?? 0 ?>" min="0">
+            <div class="adm-form-row">
+                <div class="adm-form-group adm-form-group-full">
+                    <label for="description" class="adm-label">
+                        <span class="adm-label-text">Description</span>
+                    </label>
+                    <textarea name="description" id="description" class="adm-textarea" rows="4" placeholder="Enter product description"><?= htmlspecialchars($editData['description'] ?? '') ?></textarea>
+                </div>
+            </div>
 
-    <label>
-        <input type="checkbox" name="is_on_sale" <?= (isset($editData['is_on_sale']) && $editData['is_on_sale'])?'checked':'' ?>> On Sale
-    </label>
+            <div class="adm-form-section-title">
+                <span class="adm-section-icon">💰</span>
+                <span>Pricing & Stock</span>
+            </div>
 
-    <button type="submit"><?= $editData ? "Update" : "Add" ?></button>
-    <?php if ($editData): ?>
-        <a href="products.php"><button type="button">Cancel</button></a>
-    <?php endif; ?>
-</form>
+            <div class="adm-form-row">
+                <div class="adm-form-group">
+                    <label for="original_price" class="adm-label">
+                        <span class="adm-label-text">Original Price (₹)</span>
+                        <span class="adm-label-required">*</span>
+                    </label>
+                    <input type="number" step="0.01" name="original_price" id="original_price" class="adm-input" value="<?= htmlspecialchars($editData['original_price'] ?? '') ?>" placeholder="0.00" required>
+                </div>
 
-<h2 style="margin-top:40px;">Products List</h2>
-<table>
-<tr>
-<th>ID</th>
-<th>Group</th>
-<th>Category</th>
-<th>Subcategory</th>
-<th>Name</th>
-<th>Price</th>
-<th>Deal Price</th>
-<th>Stock</th>
-<th>On Sale</th>
-<th>Image</th>
-<th>Actions</th>
-</tr>
-<?php foreach ($list as $row): ?>
-<tr>
-<td><?= $row['id'] ?></td>
-<td><?= htmlspecialchars($row['group_name']) ?></td>
-<td><?= htmlspecialchars($row['category_name']) ?></td>
-<td><?= htmlspecialchars($row['subcategory_name']) ?></td>
-<td><?= htmlspecialchars($row['product_name']) ?></td>
-<td><?= $row['original_price'] ?></td>
-<td><?= $row['deal_price'] ?></td>
-<td><?= $row['stock'] ?></td>
-<td><?= $row['is_on_sale'] ? 'Yes' : 'No' ?></td>
-<td><?php if($row['image_url']): ?><img src="<?= htmlspecialchars($row['image_url']) ?>" width="50"><?php endif; ?></td>
-<td class="actions">
-<a href="products.php?edit=<?= $row['id'] ?>">Edit</a>
-<a href="products.php?delete=<?= $row['id'] ?>" onclick="return confirm('Delete this product?')">Delete</a>
-</td>
-</tr>
-<?php endforeach; ?>
-</table>
+                <div class="adm-form-group">
+                    <label for="deal_price" class="adm-label">
+                        <span class="adm-label-text">Deal Price (₹)</span>
+                        <span class="adm-label-optional">(Optional)</span>
+                    </label>
+                    <input type="number" step="0.01" name="deal_price" id="deal_price" class="adm-input" value="<?= htmlspecialchars($editData['deal_price'] ?? '') ?>" placeholder="0.00">
+                </div>
+
+                <div class="adm-form-group">
+                    <label for="stock" class="adm-label">
+                        <span class="adm-label-text">Stock Quantity</span>
+                        <span class="adm-label-required">*</span>
+                    </label>
+                    <input type="number" name="stock" id="stock" class="adm-input" value="<?= htmlspecialchars($editData['stock'] ?? 0) ?>" min="0" placeholder="0" required>
+                </div>
+            </div>
+
+            <div class="adm-form-section-title">
+                <span class="adm-section-icon">🖼️</span>
+                <span>Product Image</span>
+            </div>
+
+            <div class="adm-form-row">
+                <div class="adm-form-group adm-form-group-full">
+                    <label for="image_file" class="adm-label">
+                        <span class="adm-label-text">Upload Image</span>
+                        <span class="adm-label-optional">(JPG, PNG, GIF, WEBP - Max 2MB)</span>
+                    </label>
+                    <div class="adm-file-upload">
+                        <input type="file" name="image_file" id="image_file" class="adm-file-input" accept="image/*" onchange="previewImage(event)">
+                        <label for="image_file" class="adm-file-label">
+                            <span class="adm-file-icon">📁</span>
+                            <span class="adm-file-text">Choose Image</span>
+                        </label>
+                        <span class="adm-file-name" id="fileName">No file chosen</span>
+                    </div>
+                    <div class="adm-image-preview-wrapper">
+                        <img id="image_preview" src="<?= htmlspecialchars($editData['image_url'] ?? '') ?>" class="adm-image-preview" style="<?= empty($editData['image_url'])?'display:none;':'' ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="adm-form-section-title">
+                <span class="adm-section-icon">⚙️</span>
+                <span>Additional Options</span>
+            </div>
+
+            <div class="adm-form-row">
+                <div class="adm-form-group adm-form-group-full">
+                    <label class="adm-checkbox-wrapper">
+                        <input type="checkbox" name="is_on_sale" class="adm-checkbox-input" <?= (isset($editData['is_on_sale']) && $editData['is_on_sale'])?'checked':'' ?>>
+                        <span class="adm-checkbox-label">
+                            <span class="adm-checkbox-icon">🏷️</span>
+                            Mark this product as "On Sale"
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="adm-form-actions">
+                <button type="submit" class="adm-btn adm-btn-primary adm-btn-lg">
+                    <?= $editData ? "💾 Update Product" : "➕ Add Product" ?>
+                </button>
+
+                <?php if ($editData): ?>
+                    <a href="products.php" class="adm-btn adm-btn-secondary adm-btn-lg">
+                        ✕ Cancel
+                    </a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+
+    <div class="adm-card">
+        <div class="adm-card-header">
+            <h3 class="adm-card-title">
+                All Products 
+                <span class="adm-count-badge"><?= count($list) ?></span>
+            </h3>
+        </div>
+
+        <?php if(count($list) > 0): ?>
+            <div class="adm-table-wrapper">
+                <table class="adm-table adm-products-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($list as $row): ?>
+                            <tr>
+                                <td>
+                                    <?php if($row['image_url']): ?>
+                                        <img src="<?= htmlspecialchars($row['image_url']) ?>" class="adm-product-thumb" alt="<?= htmlspecialchars($row['product_name']) ?>">
+                                    <?php else: ?>
+                                        <div class="adm-product-thumb-empty">📦</div>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="adm-product-info">
+                                        <strong class="adm-product-name"><?= htmlspecialchars($row['product_name']) ?></strong>
+                                        <span class="adm-product-id">#<?= str_pad($row['id'], 4, '0', STR_PAD_LEFT) ?></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="adm-category-stack">
+                                        <span class="adm-group-tag-sm">📁 <?= htmlspecialchars($row['group_name']) ?></span>
+                                        <span class="adm-category-tag-sm">📂 <?= htmlspecialchars($row['category_name']) ?></span>
+                                        <?php if($row['subcategory_name']): ?>
+                                            <span class="adm-subcategory-tag-sm">📄 <?= htmlspecialchars($row['subcategory_name']) ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="adm-price-display">
+                                        <span class="adm-price-original">₹<?= number_format($row['original_price'], 2) ?></span>
+                                        <?php if($row['deal_price']): ?>
+                                            <span class="adm-price-deal">₹<?= number_format($row['deal_price'], 2) ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="adm-stock-badge <?= $row['stock'] > 0 ? 'adm-stock-in' : 'adm-stock-out' ?>">
+                                        <?= $row['stock'] ?> units
+                                    </span>
+                                </td>
+                                <td>
+                                    <?php if($row['is_on_sale']): ?>
+                                        <span class="adm-badge adm-badge-danger">🏷️ On Sale</span>
+                                    <?php else: ?>
+                                        <span class="adm-badge adm-badge-success">Regular</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="adm-action-buttons">
+                                        <a href="products.php?edit=<?= $row['id'] ?>" class="adm-btn adm-btn-sm adm-btn-primary" title="Edit Product">
+                                            ✏️ Edit
+                                        </a>
+                                        <a href="products.php?delete=<?= $row['id'] ?>" class="adm-btn adm-btn-sm adm-btn-danger" onclick="return confirm('Are you sure you want to delete this product? This action cannot be undone.')" title="Delete Product">
+                                            🗑️ Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <div class="adm-empty-state">
+                <div class="adm-empty-icon">📦</div>
+                <h3 class="adm-empty-title">No products yet</h3>
+                <p class="adm-empty-text">Start by adding your first product using the form above.</p>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
-</div>
+
+<style>
+   #admSidebar ~ .adm-content {
+    margin-left: var(--adm-sidebar-width, 280px);
+    transition: margin-left .28s ease;
+}
+
+#admSidebar.adm-collapsed ~ .adm-content {
+    margin-left: var(--adm-sidebar-collapsed, 80px);
+}
+
+@media (max-width:1024px) {
+    #admSidebar ~ .adm-content {
+        margin-left: 0 !important;
+    }
+}
+
+.adm-form-card {
+    padding: 1.25rem;
+}
+
+.adm-form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.adm-form-section-title .adm-section-icon {
+    font-size: 1.25rem;
+}
+
+.adm-form-section-title span {
+    font-weight: 800;
+    color: var(--adm-dark);
+    font-size: 1.05rem;
+}
+
+.adm-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    align-items: start;
+}
+
+.adm-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.adm-form-group-full {
+    grid-column: 1 / -1;
+}
+
+.adm-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: var(--adm-dark);
+}
+
+.adm-label .adm-label-text {
+    font-weight: 700;
+}
+
+.adm-label .adm-label-required {
+    color: var(--adm-danger);
+    margin-left: 8px;
+    font-weight: 800;
+}
+
+.adm-label .adm-label-optional {
+    color: var(--adm-gray);
+    font-size: 0.85rem;
+}
+
+.adm-input,
+.adm-select,
+.adm-textarea {
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--adm-gray-light);
+    background: var(--adm-white);
+    font-size: 1rem;
+    transition: box-shadow .18s, border-color .18s;
+}
+
+.adm-input:focus,
+.adm-select:focus,
+.adm-textarea:focus {
+    outline: none;
+    border-color: var(--adm-primary);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+    transform: translateY(-1px);
+}
+
+.adm-form-row input[type="number"] {
+    font-weight: 700;
+}
+
+.adm-form-row input[name="original_price"] {
+    border-left: 4px solid rgba(37, 99, 235, 0.08);
+}
+
+.adm-form-row input[name="deal_price"] {
+    border-left: 4px solid rgba(16, 185, 129, 0.08);
+}
+
+.adm-form-row input[name="stock"] {
+    color: var(--adm-dark);
+}
+
+.adm-form-row input[name="stock"][value="0"] {
+    color: var(--adm-danger);
+}
+
+.adm-file-label {
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
+    display: inline-flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.adm-file-name {
+    margin-left: 0.75rem;
+    color: var(--adm-gray);
+}
+
+.adm-image-preview {
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 8px;
+    border: 2px solid var(--adm-gray-light);
+}
+
+@media (max-width:600px) {
+    .adm-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .adm-image-preview {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+.adm-form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--adm-dark);
+    margin: 2rem 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--adm-gray-lighter);
+}
+
+.adm-section-icon {
+    font-size: 1.5rem;
+}
+
+.adm-label-optional {
+    color: var(--adm-gray);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.adm-textarea {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid var(--adm-gray-light);
+    border-radius: var(--adm-radius);
+    font-size: 1rem;
+    transition: var(--adm-transition);
+    background: var(--adm-gray-lighter);
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.adm-textarea:focus {
+    outline: none;
+    border-color: var(--adm-primary);
+    background: var(--adm-white);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.adm-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.adm-file-input {
+    display: none;
+}
+
+.adm-file-label {
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, var(--adm-primary), var(--adm-primary-light));
+    color: var(--adm-white);
+    border-radius: var(--adm-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    transition: var(--adm-transition);
+    box-shadow: var(--adm-shadow);
+}
+
+.adm-file-label:hover {
+    background: linear-gradient(135deg, var(--adm-primary-dark), var(--adm-primary));
+    transform: translateY(-2px);
+    box-shadow: var(--adm-shadow-lg);
+}
+
+.adm-file-icon {
+    font-size: 1.25rem;
+}
+
+.adm-file-name {
+    color: var(--adm-gray);
+    font-size: 0.9rem;
+}
+
+.adm-image-preview-wrapper {
+    margin-top: 1rem;
+}
+
+.adm-image-preview {
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: var(--adm-radius-lg);
+    box-shadow: var(--adm-shadow-lg);
+    border: 3px solid var(--adm-gray-light);
+}
+
+.adm-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: var(--adm-transition);
+    margin-bottom: 5px;
+}
+
+.adm-checkbox-input {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.adm-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--adm-dark);
+    font-size: 1rem;
+}
+
+.adm-checkbox-icon {
+    font-size: 1.25rem;
+}
+
+.adm-products-table {
+    font-size: 0.95rem;
+}
+
+.adm-product-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--adm-radius);
+    border: 2px solid var(--adm-gray-light);
+}
+
+.adm-product-thumb-empty {
+    width: 60px;
+    height: 60px;
+    background: var(--adm-gray-lighter);
+    border-radius: var(--adm-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 2px solid var(--adm-gray-light);
+}
+
+.adm-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.adm-product-name {
+    color: var(--adm-dark);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.adm-product-id {
+    color: var(--adm-gray);
+    font-size: 0.8rem;
+}
+
+.adm-category-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.adm-group-tag-sm,
+.adm-category-tag-sm,
+.adm-subcategory-tag-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--adm-radius);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.adm-group-tag-sm {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.05));
+    color: #92400e;
+}
+
+.adm-category-tag-sm {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));
+    color: #1e40af;
+}
+
+.adm-subcategory-tag-sm {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+    color: #065f46;
+}
+
+.adm-price-display {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.adm-price-original {
+    font-weight: 800;
+    color: var(--adm-dark);
+    font-size: 1.1rem;
+}
+
+.adm-price-deal {
+    font-weight: 700;
+    color: var(--adm-danger);
+    font-size: 0.95rem;
+}
+
+.adm-stock-badge {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--adm-radius);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.adm-stock-in {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--adm-secondary);
+}
+
+.adm-stock-out {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--adm-danger);
+}
+
+@media (max-width: 768px) {
+    .adm-products-table {
+        font-size: 0.85rem;
+    }
+
+    .adm-product-thumb,
+    .adm-product-thumb-empty {
+        width: 50px;
+        height: 50px;
+    }
+
+    .adm-action-buttons {
+        flex-direction: column;
+    }
+}
+</style>
 
 <script>
 function previewImage(event){
-    const input=event.target;
-    const preview=document.getElementById('image_preview');
+    const input = event.target;
+    const preview = document.getElementById('image_preview');
+    const fileName = document.getElementById('fileName');
+    
     if(input.files && input.files[0]){
-        const reader=new FileReader();
-        reader.onload=function(e){
-            preview.src=e.target.result;
-            preview.style.display='block';
+        fileName.textContent = input.files[0].name;
+        
+        const reader = new FileReader();
+        reader.onload = function(e){
+            preview.src = e.target.result;
+            preview.style.display = 'block';
         }
         reader.readAsDataURL(input.files[0]);
     } else {
-        preview.src='';
-        preview.style.display='none';
+        fileName.textContent = 'No file chosen';
+        preview.src = '';
+        preview.style.display = 'none';
     }
 }
 
-function loadCategories(groupId, selectedCat = null){
-    const categorySelect=document.getElementById('category_id');
-    categorySelect.innerHTML="<option>Loading...</option>";
-    const subSelect=document.getElementById('subcategory_id');
-    subSelect.innerHTML="<option>Optional</option>";
-
-    if(!groupId){
-        categorySelect.innerHTML="<option value=''>Select Group First</option>";
-        return;
-    }
-
-    fetch("products.php?fetch_categories="+groupId)
-    .then(res=>res.json())
-    .then(data=>{
-        let html="<option value=''>Select Category</option>";
-        data.forEach(row=>{
-            let sel=(selectedCat==row.id)?"selected":"";
-            html+=`<option value="${row.id}" ${sel}>${row.category_name}</option>`;
-        });
-        categorySelect.innerHTML=html;
-    });
-}
-
-function loadSubcategories(categoryId, selectedSub=null){
+function loadCategories(categoryId, selectedSub=null){
     const subSelect=document.getElementById('subcategory_id');
     subSelect.innerHTML="<option>Loading...</option>";
 

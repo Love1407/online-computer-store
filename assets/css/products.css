@@ -1,9 +1,3 @@
-/* ============================================
-   PRODUCTS PAGE STYLES
-   Prefix: prdct-
-   ============================================ */
-
-/* ===== LAYOUT ===== */
 .prdct-wrapper {
     background: var(--gray-lighter);
     min-height: 100vh;
@@ -18,7 +12,6 @@
     margin: 0 auto;
 }
 
-/* ===== SIDEBAR ===== */
 .prdct-sidebar {
     width: 320px;
     background: var(--white);
@@ -203,7 +196,6 @@
     margin: 1.5rem 0;
 }
 
-/* ===== MAIN CONTENT ===== */
 .prdct-main {
     flex: 1;
 }
@@ -218,7 +210,6 @@
     font-size: 1.1rem;
 }
 
-/* ===== PRODUCT GRID ===== */
 .prdct-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -413,7 +404,6 @@
     box-shadow: var(--shadow-md);
 }
 
-/* ===== PAGINATION ===== */
 .prdct-pager {
     margin-top: 2rem;
     text-align: center;
@@ -452,7 +442,6 @@
     background: var(--primary-dark);
 }
 
-/* ===== QUICK VIEW MODAL ===== */
 .prdct-modal {
     position: fixed;
     left: 50%;
@@ -619,7 +608,6 @@
     border-color: var(--gray);
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
     .prdct-container {
         flex-direction: column;
