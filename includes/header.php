@@ -24,7 +24,7 @@ if (isset($_SESSION['user_id'])) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hmart</title>
+<title>LoveMart</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
 .cart-count {
@@ -40,7 +40,7 @@ if (isset($_SESSION['user_id'])) {
 <body>
 
 <header class="header">
-    <div class="logo"><a href="/online-computer-store/index.php">Hmart</a></div>
+    <div class="logo"><a href="/online-computer-store/index.php">LoveMart</a></div>
 
     <div class="icons">
         <a href="/online-computer-store/cart.php" class="cart-icon">
@@ -60,7 +60,7 @@ if (isset($_SESSION['user_id'])) {
 <nav class="nav-bar">
     <ul>
         <li><a href="/online-computer-store/index.php">Home</a></li>
-        <li><a href="/online-computer-store/index.php">About</a></li>
+        <li><a href="/online-computer-store/about.php">About</a></li>
         <li><a href="/online-computer-store/exploreproducts.php">Explore Products</a></li>  
     </ul>
 </nav>

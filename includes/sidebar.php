@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Hmart</title>
+    <title>Admin Dashboard - LoveMart</title>
     <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body>
     <div class="adm-sidebar" id="admSidebar">
         <div class="adm-logo">
-            <h1 class="adm-logo-text">Hmart Admin</h1>
+            <h1 class="adm-logo-text">LoveMart Admin</h1>
             <div class="adm-logo-icon">🏪</div>
         </div>
 

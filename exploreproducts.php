@@ -156,7 +156,6 @@ require_once __DIR__ . '/includes/header.php';
                     </select>
                 </div>
 
-                <div class="prdct-price-row">
                     <div class="prdct-price-group">
                         <label class="prdct-price-label">Min price</label>
                         <input id="minPrice" type="number" placeholder="0" class="prdct-filter-input">
@@ -165,7 +164,6 @@ require_once __DIR__ . '/includes/header.php';
                         <label class="prdct-price-label">Max price</label>
                         <input id="maxPrice" type="number" placeholder="99999" class="prdct-filter-input">
                     </div>
-                </div>
 
                 <label class="prdct-checkbox-label">
                     <input id="saleOnly" type="checkbox" class="prdct-checkbox"> On Sale only

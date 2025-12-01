@@ -93,7 +93,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 ?>
 
-<link rel="stylesheet" href="assets/css/cart.css">
+<link rel="stylesheet" href="assets/css/checkout.css">
 
 <div class="ckt-wrapper">
     <div class="ckt-container">

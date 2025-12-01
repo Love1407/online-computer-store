@@ -1,0 +1,552 @@
+/* ============================================
+   CHECKOUT PAGE - MODERN DESIGN STYLESHEET
+   ============================================ */
+
+:root {
+    --primary-color: #667eea;
+    --primary-dark: #764ba2;
+    --secondary-color: #28a745;
+    --danger-color: #ff4757;
+    --text-dark: #333;
+    --text-light: #666;
+    --gray-light: #e0e0e0;
+    --bg-light: #f8f9fa;
+}
+
+/* ============================================
+   MAIN WRAPPER
+   ============================================ */
+
+.ckt-wrapper {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.ckt-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 450px;
+    gap: 40px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   LEFT SECTION - FORM
+   ============================================ */
+
+.ckt-left {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.ckt-heading {
+    font-size: 28px;
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: 25px;
+    margin-top: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.ckt-heading:first-child {
+    margin-top: 0;
+}
+
+/* ============================================
+   FORM GROUPS
+   ============================================ */
+
+.ckt-form-group {
+    margin-bottom: 20px;
+}
+
+.ckt-form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.ckt-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    color: var(--text-dark);
+}
+
+.ckt-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.ckt-input:read-only {
+    background: #f5f5f5;
+    cursor: not-allowed;
+    color: #999;
+}
+
+.ckt-input::placeholder {
+    color: #999;
+}
+
+/* ============================================
+   MULTI-COLUMN LAYOUTS
+   ============================================ */
+
+.ckt-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.ckt-3col {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+}
+
+/* ============================================
+   ERROR MESSAGES
+   ============================================ */
+
+.ckt-error-list {
+    background: #fff5f5;
+    border: 2px solid var(--danger-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.ckt-error-list div {
+    color: var(--danger-color);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.ckt-error-list div:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   SUBMIT BUTTON
+   ============================================ */
+
+.ckt-pay-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    margin-top: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ckt-pay-btn::before {
+    content: '🔒 ';
+    margin-right: 8px;
+}
+
+.ckt-pay-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+}
+
+.ckt-pay-btn:active {
+    transform: translateY(-1px);
+}
+
+.ckt-pay-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============================================
+   RIGHT SECTION - ORDER SUMMARY
+   ============================================ */
+
+.ckt-right {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.ckt-summary-box {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.ckt-summary-title {
+    font-size: 24px;
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+/* ============================================
+   SUMMARY ITEMS
+   ============================================ */
+
+.ckt-summary-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: var(--bg-light);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.ckt-summary-item:hover {
+    background: #f0f0f0;
+    transform: translateX(5px);
+}
+
+.ckt-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ckt-prod-title {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.ckt-prod-price {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.ckt-prod-qty {
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+/* ============================================
+   SUMMARY CALCULATIONS
+   ============================================ */
+
+.ckt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-light);
+    font-size: 15px;
+    color: var(--text-light);
+}
+
+.ckt-row:last-of-type {
+    border-bottom: none;
+}
+
+.ckt-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 15px;
+    border-top: 3px solid var(--primary-color);
+    font-size: 22px;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.ckt-total strong {
+    color: var(--primary-color);
+    font-size: 26px;
+}
+
+/* ============================================
+   PAYMENT ICONS
+   ============================================ */
+
+.ckt-payment-icons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-light);
+    justify-content: center;
+    opacity: 0.6;
+}
+
+.ckt-payment-icons img {
+    height: 30px;
+    width: auto;
+}
+
+/* ============================================
+   SECURITY BADGE
+   ============================================ */
+
+.ckt-security-note {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f0f9ff;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #0066cc;
+}
+
+.ckt-security-note::before {
+    content: '🔒 ';
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .ckt-container {
+        grid-template-columns: 1fr 400px;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 992px) {
+    .ckt-container {
+        grid-template-columns: 1fr;
+    }
+
+    .ckt-right {
+        position: static;
+    }
+
+    .ckt-3col {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ckt-3col .ckt-form-group:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .ckt-wrapper {
+        padding: 20px 10px;
+    }
+
+    .ckt-container {
+        gap: 20px;
+    }
+
+    .ckt-left,
+    .ckt-summary-box {
+        padding: 25px 20px;
+        border-radius: 15px;
+    }
+
+    .ckt-heading {
+        font-size: 24px;
+        margin-top: 25px;
+    }
+
+    .ckt-2col,
+    .ckt-3col {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .ckt-3col .ckt-form-group:first-child {
+        grid-column: 1;
+    }
+
+    .ckt-summary-title {
+        font-size: 20px;
+    }
+
+    .ckt-summary-item {
+        grid-template-columns: 70px 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .ckt-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .ckt-prod-title {
+        font-size: 14px;
+    }
+
+    .ckt-prod-price {
+        font-size: 16px;
+    }
+
+    .ckt-total {
+        font-size: 20px;
+    }
+
+    .ckt-total strong {
+        font-size: 22px;
+    }
+
+    .ckt-pay-btn {
+        font-size: 16px;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ckt-wrapper {
+        padding: 15px 8px;
+    }
+
+    .ckt-left,
+    .ckt-summary-box {
+        padding: 20px 15px;
+    }
+
+    .ckt-heading {
+        font-size: 20px;
+    }
+
+    .ckt-input {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .ckt-pay-btn {
+        font-size: 15px;
+        padding: 14px;
+    }
+
+    .ckt-summary-item:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   ANIMATIONS & INTERACTIONS
+   ============================================ */
+
+.ckt-input:invalid:not(:placeholder-shown) {
+    border-color: var(--danger-color);
+}
+
+.ckt-input:valid:not(:placeholder-shown) {
+    border-color: var(--secondary-color);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.ckt-error-list {
+    animation: shake 0.4s ease-in-out;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.ckt-pay-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.ckt-pay-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* ============================================
+   CARD ICONS
+   ============================================ */
+
+.ckt-form-group.card-input {
+    position: relative;
+}
+
+.ckt-form-group.card-input::after {
+    content: '💳';
+    position: absolute;
+    right: 15px;
+    top: 42px;
+    font-size: 20px;
+    opacity: 0.5;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .ckt-wrapper {
+        background: #ffffff;
+        padding: 0;
+    }
+
+    .ckt-pay-btn {
+        display: none;
+    }
+
+    .ckt-container {
+        box-shadow: none;
+    }
+}

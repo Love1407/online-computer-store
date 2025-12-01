@@ -5,7 +5,7 @@
   <div class="footer-container" style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:30px;">
 
     <div class="footer-col" style="flex:1 1 250px; min-width:250px;">
-      <h2 style="color:#2b6ed4; margin-bottom:10px;">Hmart</h2>
+      <h2 style="color:#2b6ed4; margin-bottom:10px;">LoveMart</h2>
       <p style="font-size:14px; color:#555; line-height:1.6;">Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
       <div class="social-icons" style="margin-top:15px; display:flex; gap:10px;">
         <a href="#" style="font-size:14px; border:1px solid #ccc; padding:6px 8px; border-radius:4px;">f</a>
@@ -49,7 +49,7 @@
   </div>
 
   <div style="margin-top:40px; text-align:center; padding:15px; background:#e5f2fe; font-size:14px; color:#555;">
-    © 2025 <b>Hmart</b> Made With 💙 By Codeecarnival.
+    © 2025 <b>LoveMart</b> Made With 💙 By Codeecarnival.
   </div>
 </footer>
 </body>
