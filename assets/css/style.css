@@ -124,6 +124,10 @@ a {
     position: relative;
 }
 
+.icons li {
+    list-style: none;
+}
+
 .icons a:hover {
     background: var(--gray-lighter);
     color: var(--primary-color);
@@ -222,7 +226,7 @@ a {
     align-items: center;
     justify-content: space-between;
     padding: 4rem;
-    min-height: 400px;
+    min-height: 300px;
 }
 
 .slide-img {
@@ -306,16 +310,8 @@ a {
     transform: translateY(-50%) scale(1.1);
 }
 
-.left { left: 2rem; }
-.right { right: 2rem; }
-
-.category-box {
-    margin: 3rem auto;
-    max-width: 1200px;
-    display: flex;
-    gap: 2rem;
-    padding: 0 2rem;
-}
+.left { left: 0.5rem; }
+.right { right: 0.5rem; }
 
 .cat-card {
     flex: 1;
@@ -479,7 +475,7 @@ a {
     width: 100%;
     background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
     margin: 4rem 0;
-    padding: 5rem 2rem;
+    padding: 2.5rem 1rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -574,41 +570,39 @@ a {
     padding: 0 2rem;
 }
 
+.services {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 .service-box {
-    flex: 1;
-    min-width: 250px;
-    max-width: 300px;
-    padding: 2rem;
-    background: var(--white);
-    border-radius: var(--radius-lg);
     text-align: center;
-    transition: var(--transition);
-    box-shadow: var(--shadow);
-    border: 2px solid var(--gray-lighter);
+    padding: 20px;
+    flex: 1 1 250px; 
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.service-box:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--primary-color);
-}
-
-.service-box img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+.service-icon {
+    font-size: 3em;
+    color: #007bff; 
+    margin-bottom: 10px;
 }
 
 .service-box h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: var(--dark);
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
 }
 
-.service-box p {
-    color: var(--gray);
-    font-size: 0.95rem;
+@media (max-width: 600px) {
+    .service-box {
+        flex: 1 1 100%;
+    }
 }
 
 .site-footer {
@@ -730,9 +724,6 @@ a {
         font-size: 2rem;
     }
 
-    .category-box {
-        flex-direction: column;
-    }
 
     .red-left-img,
     .red-right-img {
@@ -806,7 +797,6 @@ a {
 .container {
     max-width: 1200px;
     margin: 2rem auto;
-    padding: 0 2rem;
 }
 
 .form-card {
@@ -1189,3 +1179,82 @@ a {
         gap: 0.75rem;
     }
 }
+
+.category-box {
+          display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+        }
+
+        .cat-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            /* flex-grow: 1, flex-shrink: 1, basis: 280px */
+            flex: 1 1 280px; 
+            min-width: 280px; /* Minimum width before wrapping */
+            transition: transform 0.2s;
+        }
+
+        .cat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .cat-image {
+            width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        
+        .cat-card h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .blue-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-transform: uppercase;
+            transition: background-color 0.2s;
+            width: 100%; /* Make button full width for better mobile tap target */
+            max-width: 200px; /* Limit button size on large screens */
+        }
+
+        .blue-btn:hover {
+            background-color: #0056b3;
+        }
+        
+
+        /* --- Responsiveness (Mobile View) --- */
+        /* Media Query for screens smaller than 600px */
+        @media (max-width: 600px) {
+            .category-box {
+                padding: 10px; /* Reduced padding on small screens */
+                grid-template-columns: auto;
+            }
+
+            .cat-card {
+                /* On small screens, the card takes up the full width (minus padding/gap) */
+                flex: 1 1 100%; 
+                min-width: unset; /* Remove min-width constraint */
+            }
+            
+            .blue-btn {
+                max-width: 100%; /* Button is full width on mobile */
+            }
+        }

@@ -100,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($subcategory_id <= 0) $errors[] = "Please select a subcategory.";
     if ($product_name === '') $errors[] = "Product name cannot be empty.";
     if (!is_numeric($original_price)) $errors[] = "Original price must be numeric.";
+    if ($original_price < $deal_price) $errors[] = "Original price must be numeric.";
     if ($deal_price === '' || !is_numeric($deal_price)) $errors[] = "Deal price must be numeric.";
     if ($stock < 0) $errors[] = "Stock cannot be negative.";
 

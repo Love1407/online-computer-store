@@ -1,49 +1,52 @@
 <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
+<?php
+require_once __DIR__ . '/includes/db.php'; 
+// ---- GET TOTAL ORDERS ----
+$stmt = $pdo->prepare("SELECT COUNT(*) AS total_orders FROM orders");
+$stmt->execute();
+$total_orders = $stmt->fetch(PDO::FETCH_ASSOC)['total_orders'] ?? 0;
+
+// ---- GET TOTAL PRODUCTS ----
+$stmt = $pdo->prepare("SELECT COUNT(*) AS total_products FROM products");
+$stmt->execute();
+$total_products = $stmt->fetch(PDO::FETCH_ASSOC)['total_products'] ?? 0;
+
+// ---- GET TOTAL ACTIVE USERS ----
+$stmt = $pdo->prepare("SELECT COUNT(*) AS total_users FROM users");
+$stmt->execute();
+$total_users = $stmt->fetch(PDO::FETCH_ASSOC)['total_users'] ?? 0;
+
+$stmt = $pdo->prepare("SELECT * FROM orders ORDER BY created_at DESC LIMIT 5");
+$stmt->execute();
+$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+<link rel="stylesheet" href="assets/css/order.css">
 
 <div class="adm-content" id="content">
     <div class="adm-welcome">
-        <h1 class="adm-welcome-title">Welcome back, Admin! 👋</h1>
+        <h1 class="adm-welcome-title">Welcome back, Admin</h1>
         <p class="adm-welcome-subtitle">Here's what's happening with your store today</p>
     </div>
 
     <div class="adm-stats-grid">
-        <div class="adm-stat-card">
-            <div class="adm-stat-header">
-                <div>
-                    <div class="adm-stat-label">Total Revenue</div>
-                </div>
-                <div class="adm-stat-icon">💰</div>
-            </div>
-            <div class="adm-stat-value">$1,24,532</div>
-            <div class="adm-stat-change adm-up">
-                ↑ 12.5% from last month
-            </div>
-        </div>
 
-        <div class="adm-stat-card adm-success">
+     <div class="adm-stat-card adm-warning">
             <div class="adm-stat-header">
                 <div>
                     <div class="adm-stat-label">Total Orders</div>
                 </div>
-                <div class="adm-stat-icon">📦</div>
             </div>
-            <div class="adm-stat-value">2,847</div>
-            <div class="adm-stat-change adm-up">
-                ↑ 8.2% from last month
-            </div>
+            <div class="adm-stat-value"><?= $total_orders ?></div>
         </div>
+
 
         <div class="adm-stat-card adm-warning">
             <div class="adm-stat-header">
                 <div>
                     <div class="adm-stat-label">Products</div>
                 </div>
-                <div class="adm-stat-icon">📱</div>
             </div>
-            <div class="adm-stat-value">567</div>
-            <div class="adm-stat-change adm-up">
-                ↑ 15 new products
-            </div>
+            <div class="adm-stat-value"><?= $total_products ?></div>
         </div>
 
         <div class="adm-stat-card adm-info">
@@ -51,12 +54,8 @@
                 <div>
                     <div class="adm-stat-label">Active Users</div>
                 </div>
-                <div class="adm-stat-icon">👥</div>
             </div>
-            <div class="adm-stat-value">12,432</div>
-            <div class="adm-stat-change adm-up">
-                ↑ 18.7% from last month
-            </div>
+            <div class="adm-stat-value"><?= $total_users ?></div>  
         </div>
     </div>
 
@@ -66,16 +65,16 @@
         </div>
         <div class="adm-card-actions">
             <a href="/online-computer-store/products.php" class="adm-btn adm-btn-primary">
-                ➕ Add New Product
+                Add New Product
             </a>
             <a href="/online-computer-store/admincategories.php" class="adm-btn adm-btn-success">
-                📁 Manage Categories
+                Manage Categories
             </a>
             <a href="/online-computer-store/admin_order_history.php" class="adm-btn adm-btn-secondary">
-                📋 View Orders
+                View Orders
             </a>
             <a href="/online-computer-store/userdetails.php" class="adm-btn adm-btn-secondary">
-                👥 Manage Users
+                Manage Users
             </a>
         </div>
     </div>
@@ -87,145 +86,88 @@
                 View All Orders
             </a>
         </div>
-        <div class="adm-table-wrapper">
-            <table class="adm-table">
+        <?php if(empty($orders)): ?>
+            <p class="empty-state">You have not placed any orders yet.</p>
+        <?php else: ?>
+            <table class="orders-table">
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <th>Placed On</th>
+                        <th>Total ($)</th>
+                        <th>Shipping</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>#ORD-12345</strong></td>
-                        <td>John Doe</td>
-                        <td>Smart Phone X Pro</td>
-                        <td><strong>$24,999</strong></td>
-                        <td><span class="adm-badge adm-badge-success">Delivered</span></td>
-                        <td>Dec 01, 2025</td>
-                        <td>
-                            <a href="#" class="adm-btn adm-btn-sm adm-btn-secondary">View</a>
-                        </td>
+                    <?php foreach($orders as $order): ?>
+                    <tr class="order-row" data-order-id="<?= $order['id'] ?>">
+                        <td>#<?= $order['id'] ?></td>
+                        <td><?= date('F j, Y', strtotime($order['created_at'])) ?></td>
+                        <td>$<?= number_format($order['total'],2) ?></td>
+                        <td><?= htmlspecialchars($order['shipping_method']) ?></td>
+                        <td><button type="button" class="toggle-items-btn" data-order-id="<?= $order['id'] ?>">View Details</button></td>
                     </tr>
-                    <tr>
-                        <td><strong>#ORD-12344</strong></td>
-                        <td>Jane Smith</td>
-                        <td>Gaming Laptop Ultra</td>
-                        <td><strong>$89,999</strong></td>
-                        <td><span class="adm-badge adm-badge-warning">Processing</span></td>
-                        <td>Nov 30, 2025</td>
-                        <td>
-                            <a href="#" class="adm-btn adm-btn-sm adm-btn-secondary">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>#ORD-12343</strong></td>
-                        <td>Mike Johnson</td>
-                        <td>Wireless Headphones</td>
-                        <td><strong>$2,999</strong></td>
-                        <td><span class="adm-badge adm-badge-primary">Shipped</span></td>
-                        <td>Nov 30, 2025</td>
-                        <td>
-                            <a href="#" class="adm-btn adm-btn-sm adm-btn-secondary">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>#ORD-12342</strong></td>
-                        <td>Sarah Williams</td>
-                        <td>Tablet Pro 12.9"</td>
-                        <td><strong>$54,999</strong></td>
-                        <td><span class="adm-badge adm-badge-danger">Cancelled</span></td>
-                        <td>Nov 29, 2025</td>
-                        <td>
-                            <a href="#" class="adm-btn adm-btn-sm adm-btn-secondary">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>#ORD-12341</strong></td>
-                        <td>Robert Brown</td>
-                        <td>Smart Watch Series 8</td>
-                        <td><strong>$18,999</strong></td>
-                        <td><span class="adm-badge adm-badge-success">Delivered</span></td>
-                        <td>Nov 29, 2025</td>
-                        <td>
-                            <a href="#" class="adm-btn adm-btn-sm adm-btn-secondary">View</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    <tr class="order-items" id="order-items-<?= $order['id'] ?>" style="display:none;">
+                        <td colspan="5">
+                            <span class="items-label">Order Items:</span>
+                            <table class="items-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Qty</th>
+                                        <th>Price ($)</th>
+                                        <th>Subtotal ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $stmt2 = $pdo->prepare("SELECT oh.quantity, oh.price, p.product_name
+                                                            FROM order_history oh
+                                                            JOIN products p ON oh.product_id = p.id
+                                                            WHERE oh.order_id=?");
+                                    $stmt2->execute([$order['id']]);
+                                    $items = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-    <div class="adm-card">
-        <div class="adm-card-header">
-            <h3 class="adm-card-title">Top Selling Products</h3>
-            <a href="/online-computer-store/products.php" class="adm-btn adm-btn-sm adm-btn-secondary">
-                View All Products
-            </a>
-        </div>
-        <div class="adm-table-wrapper">
-            <table class="adm-table">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Sales</th>
-                        <th>Revenue</th>
+                                    $orderSubtotal = 0;
+                                    foreach($items as $item):
+                                        $itemSubtotal = $item['quantity'] * $item['price'];
+                                        $orderSubtotal += $itemSubtotal;
+                                    ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($item['product_name']) ?></td>
+                                        <td><?= $item['quantity'] ?></td>
+                                        <td>$<?= number_format($item['price'],2) ?></td>
+                                        <td>$<?= number_format($itemSubtotal,2) ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                    <tr class="subtotal-row">
+                                        <td colspan="3" style="text-align:right;">Order Subtotal:</td>
+                                        <td>$<?= number_format($orderSubtotal,2) ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Smart Phone X Pro</strong></td>
-                        <td>Smartphones</td>
-                        <td>$24,999</td>
-                        <td><span class="adm-badge adm-badge-success">In Stock</span></td>
-                        <td>156 units</td>
-                        <td><strong>$38,99,844</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gaming Laptop Ultra</strong></td>
-                        <td>Laptops</td>
-                        <td>$89,999</td>
-                        <td><span class="adm-badge adm-badge-warning">Low Stock</span></td>
-                        <td>87 units</td>
-                        <td><strong>$78,29,913</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Wireless Headphones</strong></td>
-                        <td>Accessories</td>
-                        <td>$2,999</td>
-                        <td><span class="adm-badge adm-badge-success">In Stock</span></td>
-                        <td>234 units</td>
-                        <td><strong>$7,01,766</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tablet Pro 12.9"</strong></td>
-                        <td>Tablets</td>
-                        <td>$54,999</td>
-                        <td><span class="adm-badge adm-badge-danger">Out of Stock</span></td>
-                        <td>64 units</td>
-                        <td><strong>$35,19,936</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Smart Watch Series 8</strong></td>
-                        <td>Wearables</td>
-                        <td>$18,999</td>
-                        <td><span class="adm-badge adm-badge-success">In Stock</span></td>
-                        <td>143 units</td>
-                        <td><strong>$27,16,857</strong></td>
-                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
-    </div>
+        <?php endif; ?>
 </div>
-
+<script>
+document.querySelectorAll('.toggle-items-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const orderId = btn.dataset.orderId;
+        const itemsRow = document.getElementById('order-items-' + orderId);
+        if (itemsRow.style.display === 'table-row') {
+            itemsRow.style.display = 'none';
+            btn.textContent = 'View Details';
+        } else {
+            itemsRow.style.display = 'table-row';
+            btn.textContent = 'Hide Details';
+        }
+    });
+});
+</script>
 </body>
 </html>

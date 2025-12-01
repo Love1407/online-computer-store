@@ -36,18 +36,6 @@ foreach($order_items as $item) $subtotal += $item['original_price'] * $item['qua
 ?>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 20px;
-    }
 
     /* Success Animation Container */
     .success-animation {
@@ -71,16 +59,17 @@ foreach($order_items as $item) $subtotal += $item['original_price'] * $item['qua
             visibility: hidden;
         }
     }
+    
 
     /* Checkmark Circle */
-    .checkmark-circle {
+    /* .checkmark-circle {
         width: 120px;
         height: 120px;
         position: relative;
         display: inline-block;
         vertical-align: top;
         margin-bottom: 30px;
-    }
+    } */
 
     .checkmark-circle .background {
         width: 120px;
@@ -88,7 +77,7 @@ foreach($order_items as $item) $subtotal += $item['original_price'] * $item['qua
         border-radius: 50%;
         background: #10b981;
         position: absolute;
-        animation: scaleIn 0.5s ease-in-out;
+        /* animation: scaleIn 0.5s ease -in-out; */
     }
 
     @keyframes scaleIn {
@@ -103,7 +92,7 @@ foreach($order_items as $item) $subtotal += $item['original_price'] * $item['qua
         }
     }
 
-    .checkmark-circle .checkmark {
+    /* .checkmark-circle .checkmark {
         border-radius: 5px;
     }
 
@@ -125,7 +114,36 @@ foreach($order_items as $item) $subtotal += $item['original_price'] * $item['qua
         position: absolute;
         transform: scaleX(-1) rotate(135deg);
         transform: rotate(45deg);
-    }
+    } */
+    .checkmark-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: #4CAF50;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkmark {
+    position: relative;
+    width: 70px;
+    height: 70px;
+}
+
+.checkmark:after {
+    content: '';
+    position: absolute;
+    width: 25px;        /* right stroke */
+    height: 50px;       /* left-down stroke */
+    border-right: 5px solid white;
+    border-bottom: 5px solid white;
+    transform: rotate(45deg);
+    top: 5px;           /* adjust vertical */
+    left: 18px;         /* adjust horizontal */
+}
+
 
     @keyframes checkmark {
         0% {

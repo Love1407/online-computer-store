@@ -10,7 +10,7 @@
     <div class="adm-sidebar" id="admSidebar">
         <div class="adm-logo">
             <h1 class="adm-logo-text">LoveMart Admin</h1>
-            <div class="adm-logo-icon">🏪</div>
+            <div class="adm-logo-icon"></div>
         </div>
 
         <button class="adm-toggle-btn" onclick="toggleSidebar()">
@@ -19,49 +19,49 @@
         <ul class="adm-menu">
             <li class="adm-menu-item <?= basename($_SERVER['PHP_SELF']) == 'admin.php' ? 'adm-active' : '' ?>">
                 <a href="/online-computer-store/admin.php">
-                    <span class="adm-menu-icon">📊</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Dashboard</span>
                 </a>
             </li>
             
             <li class="adm-menu-item <?= basename($_SERVER['PHP_SELF']) == 'admincategories.php' ? 'adm-active' : '' ?>">
                 <a href="/online-computer-store/admincategories.php">
-                    <span class="adm-menu-icon">📁</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Categories</span>
                 </a>
             </li>
             
             <li class="adm-menu-item <?= basename($_SERVER['PHP_SELF']) == 'adminsubcategories.php' ? 'adm-active' : '' ?>">
                 <a href="/online-computer-store/adminsubcategories.php">
-                    <span class="adm-menu-icon">📂</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Subcategories</span>
                 </a>
             </li>
             
             <li class="adm-menu-item <?= basename($_SERVER['PHP_SELF']) == 'products.php' ? 'adm-active' : '' ?>">
                 <a href="/online-computer-store/products.php">
-                    <span class="adm-menu-icon">📦</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Products</span>
                 </a>
             </li>
             
             <li class="adm-menu-item <?= basename($_SERVER['PHP_SELF']) == 'userdetails.php' ? 'adm-active' : '' ?>">
                 <a href="/online-computer-store/userdetails.php">
-                    <span class="adm-menu-icon">👥</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Users</span>
                 </a>
             </li>
             
             <li class="adm-menu-item <?= basename($_SERVER['PHP_SELF']) == 'admin_order_history.php' ? 'adm-active' : '' ?>">
                 <a href="/online-computer-store/admin_order_history.php">
-                    <span class="adm-menu-icon">📋</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Order History</span>
                 </a>
             </li>
             
             <li class="adm-menu-item">
                 <a href="/online-computer-store/logout.php">
-                    <span class="adm-menu-icon">🚪</span>
+                    <span class="adm-menu-icon"></span>
                     <span class="adm-menu-text">Logout</span>
                 </a>
             </li>

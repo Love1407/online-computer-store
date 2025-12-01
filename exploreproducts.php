@@ -60,32 +60,88 @@ if (isset($_GET['fetch_products'])) {
         $where = [];
         $params = [];
 
-        if ($group !== null) { $where[] = "p.group_id = ?"; $params[] = $group; }
-        if ($category !== null) { $where[] = "p.category_id = ?"; $params[] = $category; }
-        if ($subcategory !== null) { $where[] = "p.subcategory_id = ?"; $params[] = $subcategory; }
-        if ($search !== '') { $where[] = "p.product_name LIKE ?"; $params[] = "%$search%"; }
-        if ($sale === 1) { $where[] = "p.is_on_sale = 1"; }
-        if ($min_price !== null) { $where[] = "COALESCE(p.deal_price, p.original_price) >= ?"; $params[] = $min_price; }
-        if ($max_price !== null) { $where[] = "COALESCE(p.deal_price, p.original_price) <= ?"; $params[] = $max_price; }
+        // ----------------------------
+        // APPLY FILTERS
+        // ----------------------------
+        if ($group !== null) { 
+            $where[] = "p.group_id = ?"; 
+            $params[] = $group; 
+        }
 
+        if ($category !== null) { 
+            $where[] = "p.category_id = ?"; 
+            $params[] = $category; 
+        }
+
+        if ($subcategory !== null) { 
+            $where[] = "p.subcategory_id = ?"; 
+            $params[] = $subcategory; 
+        }
+
+        if ($search !== '') { 
+            $where[] = "p.product_name LIKE ?"; 
+            $params[] = "%$search%"; 
+        }
+
+        if ($sale === 1) { 
+            $where[] = "p.is_on_sale = 1"; 
+        }
+
+        if ($min_price !== null) { 
+            $where[] = "COALESCE(p.deal_price, p.original_price) >= ?"; 
+            $params[] = $min_price; 
+        }
+
+        if ($max_price !== null) { 
+            $where[] = "COALESCE(p.deal_price, p.original_price) <= ?"; 
+            $params[] = $max_price; 
+        }
+
+        // ----------------------------
+        // NEW: STOCK FILTER
+        // ----------------------------
+        $where[] = "p.stock > 0";
+
+        // Build WHERE SQL
         $whereSql = count($where) ? "WHERE " . implode(" AND ", $where) : "";
 
+        // ----------------------------
+        // COUNT TOTAL
+        // ----------------------------
         $countSql = "SELECT COUNT(*) FROM products p $whereSql";
         $countStmt = $pdo->prepare($countSql);
         $countStmt->execute($params);
         $total = (int)$countStmt->fetchColumn();
         $totalPages = max(1, (int)ceil($total / $limit));
 
+        // ----------------------------
+        // SORTING
+        // ----------------------------
         switch ($sort) {
-            case 'price_asc': $order = "ORDER BY COALESCE(p.deal_price, p.original_price) ASC"; break;
-            case 'price_desc': $order = "ORDER BY COALESCE(p.deal_price, p.original_price) DESC"; break;
-            default: $order = "ORDER BY p.created_at DESC";
+            case 'price_asc':
+                $order = "ORDER BY COALESCE(p.deal_price, p.original_price) ASC";
+                break;
+
+            case 'price_desc':
+                $order = "ORDER BY COALESCE(p.deal_price, p.original_price) DESC";
+                break;
+
+            default:
+                $order = "ORDER BY p.created_at DESC";
         }
 
+        // ----------------------------
+        // FETCH PRODUCTS
+        // ----------------------------
         $sql = "
-            SELECT p.id, p.product_name, p.description, p.original_price, p.deal_price, p.image_url,
-                   p.stock, p.is_on_sale, p.created_at,
-                   g.name AS group_name, c.category_name, s.subcategory_name
+            SELECT 
+                p.id, p.product_name, p.description, 
+                p.original_price, p.deal_price, 
+                p.image_url, p.stock, 
+                p.is_on_sale, p.created_at,
+                g.name AS group_name, 
+                c.category_name, 
+                s.subcategory_name
             FROM products p
             LEFT JOIN groups_h g ON p.group_id = g.id
             LEFT JOIN categories c ON p.category_id = c.id
@@ -99,6 +155,9 @@ if (isset($_GET['fetch_products'])) {
         $stmt->execute($params);
         $prods = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // ----------------------------
+        // OUTPUT RESPONSE
+        // ----------------------------
         json_out([
             'ok' => true,
             'products' => $prods,
@@ -112,6 +171,7 @@ if (isset($_GET['fetch_products'])) {
         json_out(['ok' => false, 'error' => $e->getMessage()]);
     }
 }
+
 
 $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -278,7 +338,7 @@ function renderProducts(items) {
                 <h4 class="prdct-card-title">${escapeHtml(p.product_name)}</h4>
                 <div class="prdct-card-price-wrapper">
                     <span class="prdct-card-price">$${price}</span>
-                    ${oldPrice ? `<span class="prdct-card-old-price">$${oldPrice}</span>` : ''}
+                    ${oldPrice && price < oldPrice ? `<span class="prdct-card-old-price">$${oldPrice}</span>` : ''}
                 </div>
                 <div class="prdct-card-meta">${escapeHtml(p.group_name || '')} › ${escapeHtml(p.category_name || '')} › ${escapeHtml(p.subcategory_name || '')}</div>
                 ${p.is_on_sale ? '<div class="prdct-card-badge">SALE</div>' : ''}
@@ -437,8 +497,34 @@ searchInput.addEventListener('keyup', (e) => {
         fetchAndRender(1);
     }
 });
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchAndRender(1);
+    // Check if a group ID was passed in the URL
+    const initialGroup = getUrlParameter('group');
+    if (initialGroup) {
+        state.group = initialGroup;
+        filterGroup.value = initialGroup; // Set the dropdown to match the selected group
+        // Trigger the change event to load categories/subcategories and fetch products
+        filterGroup.dispatchEvent(new Event('change'));
+    }
+    
+    // Fallback to initial fetch if no group is set, or if the change event didn't trigger a fetch
+    if (!initialGroup) {
+        fetchAndRender(1);
+    } else {
+        // If initialGroup is set, the 'change' event listener should trigger fetchAndRender(1) 
+        // after fetching categories, but to ensure an immediate fetch, you can explicitly call it:
+        fetchAndRender(1); 
+    }
 });
+// document.addEventListener('DOMContentLoaded', () => {
+//     fetchAndRender(1);
+// });
 </script>

@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->execute([
             $_SESSION['user_id'],$email,$first_name,$last_name,$address,$apartment,$city,$state,$country,$zip,
-            'Economy','card',$card,$total
+            'Economy','card',$card,number_format($total * 1.18,2)
         ]);
         $order_id = $pdo->lastInsertId();
 
@@ -184,7 +184,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <?php if(!empty($errors)): ?>
                     <div class="ckt-error-list">
                         <?php foreach($errors as $e): ?>
-                            <div>⚠️ <?= htmlspecialchars($e) ?></div>
+                            <div><?= htmlspecialchars($e) ?></div>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>

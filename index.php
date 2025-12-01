@@ -1,4 +1,59 @@
-<?php require_once __DIR__ . '/includes/header.php'; ?>
+<?php require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/db.php';
+ ?>
+
+<?php
+$stmt = $pdo->prepare("
+    SELECT id, product_name, description, original_price, deal_price, image_url, is_on_sale, created_at
+    FROM products
+    WHERE is_on_sale = 1
+    ORDER BY created_at DESC
+    LIMIT 8
+");
+
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$categories = [
+    [
+        'id' => 1,
+        'name' => 'Laptops',
+        'image_alt' => 'Laptop category image',
+        'image_src' => 'assets/images/laptops/gaminglaptops.png'
+    ],
+    [
+        'id' => 2,
+        'name' => 'Desktop Computers',
+        'image_alt' => 'Desktop Computer category image',
+        'image_src' => 'assets/images/desktops/allinone.png'
+    ],
+    [
+        'id' => 3,
+        'name' => 'PC Components',
+        'image_alt' => 'PC Components category image',
+        'image_src' => 'assets/images/components/cabinets.png'
+    ],
+    [
+        'id' => 4,
+        'name' => 'Displays & Monitors',
+        'image_alt' => 'Monitor category image',
+        'image_src' => 'assets/images/displays/curvedmonitor.png'
+    ],
+    [
+        'id' => 5,
+        'name' => 'Peripherals & Accessories',
+        'image_alt' => 'Peripheral category image',
+        'image_src' => 'assets/images/accessories/headphones.png'
+    ],
+    [
+        'id' => 9,
+        'name' => 'Cables & Adapters',
+        'image_alt' => 'Cable and Adapter category image',
+        'image_src' => 'assets/images/cables/adapters.jpg'
+    ],
+];
+
+?>
 
 <section class="slider">
 
@@ -11,8 +66,9 @@
                 <img src="assets/images/banner/1.png" class="slide-img">
                 <div class="text-box">
                     <h1>Easy Your Life<br>With Smart Device</h1>
-                    <p class="price-text">Only <span>$24.00</span></p>
-                    <button class="shop-btn">Shop All Devices</button>
+                    <a href="/online-computer-store/exploreproducts.php" style="text-decoration:none;">
+                        <button class="shop-btn">Shop All Devices</button>
+</a>
                 </div>
             </div>
         </div>
@@ -22,8 +78,9 @@
                 <img src="assets/images/banner/2.png" class="slide-img">
                 <div class="text-box">
                     <h1>Upgrade Your Gadgets</h1>
-                    <p class="price-text">Starting from <span>$49.00</span></p>
+                      <a href="/online-computer-store/exploreproducts.php" style="text-decoration:none;">
                     <button class="shop-btn">Shop Now</button>
+</a>
                 </div>
             </div>
         </div>
@@ -33,8 +90,9 @@
                 <img src="assets/images/banner/3.png" class="slide-img">
                 <div class="text-box">
                     <h1>Latest Smart Accessories</h1>
-                    <p class="price-text">Grab at <span>$19.00</span></p>
+                      <a href="/online-computer-store/exploreproducts.php" style="text-decoration:none;">
                     <button class="shop-btn">Explore</button>
+</a>
                 </div>
             </div>
         </div>
@@ -45,17 +103,32 @@
 </section>
 
 <section class="category-box">
-    <div class="cat-card">
-        <h2>Speaker</h2>
-        <p>From $69.00</p>
-        <button class="blue-btn">Shop Now</button>
-    </div>
+    
+    <?php
+    // Loop through the categories array and generate a card for each
+    foreach ($categories as $category) {
+        // 1. Define the target URL with the group ID
+        $target_url = 'exploreproducts.php?group=' . urlencode($category['id']);
+    ?>
+    
+    <a href="<?= htmlspecialchars($target_url) ?>" class="cat-card-link">
+        <div class="cat-card" data-category-id="<?php echo htmlspecialchars($category['id']); ?>">
+            <img 
+                src="<?php echo htmlspecialchars($category['image_src']); ?>" 
+                alt="<?php echo htmlspecialchars($category['image_alt']); ?>" 
+                class="cat-image"
+            >
+            
+            <h2><?php echo htmlspecialchars($category['name']); ?></h2>
+            
+            <button class="blue-btn" onclick="event.preventDefault(); window.location.href='<?= htmlspecialchars($target_url) ?>';">Shop Now</button>
+        </div>
+    </a>
+    
+    <?php
+    }
+    ?>
 
-    <div class="cat-card">
-        <h2>Smartphone</h2>
-        <p>From $95.00</p>
-        <button class="blue-btn">Shop Now</button>
-    </div>
 </section>
 
 <section class="products">
@@ -65,20 +138,16 @@
     <div class="product-grid">
 
         <?php  
-        $products = [
-            ["img"=>"p1.png", "tag"=>"NEW", "title"=>"Modern Smart Phone"],
-            ["img"=>"p2.png", "tag"=>"SALE", "title"=>"Bluetooth Headphone"],
-            ["img"=>"p3.png", "tag"=>"NEW", "title"=>"Smart Music Box"],
-            ["img"=>"p4.png", "tag"=>"30%", "title"=>"Air Pods Pro"]
-        ];
+        foreach ($products as $p) {
+            $tag = "SALE"; // Because these are all is_on_sale = 1
+            $img = $p['image_url'] ?: 'default.png';
 
-        foreach($products as $p){
             echo "
                 <div class='product'>
-                    <span class='badge'>{$p['tag']}</span>
-                    <img src='images/{$p['img']}' alt=''>
-                    <h4>{$p['title']}</h4>
-                    <p class='price'>$38.50</p>
+                    <span class='badge'>{$tag}</span>
+                    <img src='{$img}' alt=''>
+                    <h4>{$p['product_name']}</h4>
+                    <p class='price'>₹" . number_format(($p['deal_price'] ?? $p['original_price']), 2) . "</p>
                 </div>
             ";
         }
@@ -87,34 +156,31 @@
     </div>
 </section>
 
+
 <section class="red-banner">
     <div class="red-content">
-        <h2>Smart Fashion</h2>
+        <h2>Smart World</h2>
         <h1>With Smart Devices</h1>
-        <button class="white-btn">Shop All Devices</button>
+       <a href="/online-computer-store/exploreproducts.php" style="text-decoration:none;">
+    <button class="white-btn">Shop All Devices</button>
+</a>
     </div>
-
-    <img class="red-left-img" src="assets/images/banner/5.png">
-    <img class="red-right-img" src="assets/images/banner/5.png">
 </section>
 
 <section class="services">
     <div class="service-box">
-        <img src="assets/images/banner/1.png" alt="">
+        <i class="fas fa-truck-fast service-icon" aria-hidden="true"></i>
         <h3>Free Shipping</h3>
-        <p>Capped at $39 per order</p>
     </div>
 
     <div class="service-box">
-        <img src="assets/images/banner/2.png" alt="">
+        <i class="fas fa-credit-card service-icon" aria-hidden="true"></i>
         <h3>Card Payments</h3>
-        <p>12 Months Installments</p>
     </div>
 
     <div class="service-box">
-        <img src="assets/images/banner/3.png" alt="">
+        <i class="fas fa-rotate-left service-icon" aria-hidden="true"></i>
         <h3>Easy Returns</h3>
-        <p>Shop With Confidence</p>
     </div>
 </section>
 
