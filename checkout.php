@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->execute([
             $_SESSION['user_id'],$email,$first_name,$last_name,$address,$apartment,$city,$state,$country,$zip,
-            'Economy','card',$card,number_format($total * 1.18,2)
+            'Economy','card',$card,round($total * 1.18,2)
         ]);
         $order_id = $pdo->lastInsertId();
 
