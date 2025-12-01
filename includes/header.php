@@ -40,7 +40,7 @@ if (isset($_SESSION['user_id'])) {
 <body>
 
 <header class="header">
-    <div class="logo">Hmart</div>
+    <div class="logo"><a href="/online-computer-store/index.php">Hmart</a></div>
 
     <div class="icons">
         <a href="/online-computer-store/cart.php" class="cart-icon">

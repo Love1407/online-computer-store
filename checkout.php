@@ -189,7 +189,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     </div>
                 <?php endif; ?>
 
-                <button type="submit" class="ckt-pay-btn">Complete Order - ₹<?= number_format($total, 2) ?></button>
+                <button type="submit" class="ckt-pay-btn">Complete Order -$<?= number_format($total, 2) ?></button>
             </form>
         </div>
 

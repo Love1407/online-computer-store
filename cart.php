@@ -164,7 +164,7 @@ foreach ($items as $i) {
 
                         <div class="prt-cart-right-price">
                             <div class="prt-subtotal-label">Subtotal</div>
-                            ₹<?= number_format($subtotal, 2) ?>
+                           $<?= number_format($subtotal, 2) ?>
                         </div>
                     </div>
                     <?php endforeach; ?>
