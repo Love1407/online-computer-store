@@ -189,7 +189,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     </div>
                 <?php endif; ?>
 
-                <button type="submit" class="ckt-pay-btn">Complete Order -$<?= number_format($total, 2) ?></button>
+                <button type="submit" class="ckt-pay-btn">Complete Order $<?= number_format($total * 1.18, 2) ?></button>
             </form>
         </div>
 
@@ -254,12 +254,10 @@ countrySelect.addEventListener('change', function(){
     });
 });
 
-// Card number formatting
 document.querySelector('input[name="card_number"]')?.addEventListener('input', function(e) {
     this.value = this.value.replace(/\D/g, '');
 });
 
-// Expiry date formatting
 document.querySelector('input[name="exp_date"]')?.addEventListener('input', function(e) {
     let val = this.value.replace(/\D/g, '');
     if (val.length >= 2) {
@@ -269,7 +267,6 @@ document.querySelector('input[name="exp_date"]')?.addEventListener('input', func
     }
 });
 
-// CVV formatting
 document.querySelector('input[name="cvv"]')?.addEventListener('input', function(e) {
     this.value = this.value.replace(/\D/g, '');
 });

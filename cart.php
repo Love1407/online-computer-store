@@ -159,7 +159,7 @@ foreach ($items as $i) {
                             </div>
 
                             <a class="prt-delete-btn" href="remove_cart_item.php?id=<?= $i['cart_id'] ?>" 
-                               onclick="return confirm('Remove this item from cart?')" title="Remove item">🗑️</a>
+                               onclick="return confirm('Remove this item from cart?')" title="Remove item"></a>
                         </div>
 
                         <div class="prt-cart-right-price">

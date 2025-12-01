@@ -112,7 +112,7 @@ require_once __DIR__ . '/includes/sidebar.php';
     <div class="adm-card adm-form-card">
         <div class="adm-card-header">
             <h3 class="adm-card-title">
-                <?= $editData ? "✏️ Edit Category" : "➕ Add New Category" ?>
+                <?= $editData ? " Edit Category" : "➕ Add New Category" ?>
             </h3>
             <?php if ($editData): ?>
                 <a href="admincategories.php" class="adm-btn adm-btn-sm adm-btn-secondary">
@@ -209,13 +209,13 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <a href="admincategories.php?edit=<?= (int)$row['id'] ?>" 
                                            class="adm-btn adm-btn-sm adm-btn-primary"
                                            title="Edit Category">
-                                            ✏️ Edit
+                                             Edit
                                         </a>
                                         <a href="admincategories.php?delete=<?= (int)$row['id'] ?>"
                                            class="adm-btn adm-btn-sm adm-btn-danger"
                                            onclick="return confirm('Are you sure you want to delete this category? This action cannot be undone.')"
                                            title="Delete Category">
-                                            🗑️ Delete
+                                             Delete
                                         </a>
                                     </div>
                                 </td>

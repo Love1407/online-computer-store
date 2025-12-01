@@ -9,6 +9,39 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $search = trim($_GET['search'] ?? '');
+$success = '';
+$error = '';
+if (isset($_GET['delete'])) {
+    $delId = intval($_GET['delete']);
+    if (empty($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+        header('Location: userdetails.php?msg=forbidden');
+        exit;
+    }
+
+    try {
+        $check = $pdo->prepare("SELECT is_admin FROM users WHERE id = ?");
+        $check->execute([$delId]);
+        $row = $check->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            header('Location: userdetails.php?msg=not_found');
+            exit;
+        }
+
+        if ((int)$row['is_admin'] === 1) {
+            header('Location: userdetails.php?msg=cannot_delete_admin');
+            exit;
+        }
+
+        $del = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $del->execute([$delId]);
+        header('Location: userdetails.php?msg=deleted');
+        exit;
+    } catch (PDOException $e) {
+        header('Location: userdetails.php?msg=error');
+        exit;
+    }
+}
 
 try {
     $sql = "SELECT id, name, email, is_admin, created_at FROM users";
@@ -170,6 +203,10 @@ tbody tr:hover{
     color:var(--ud-gray)
 }
 
+.adm-btn adm-btn-danger{
+padding:6px 10px;border-radius:6px;border:none;cursor:pointer;color:#fff;background:#ef4444;font-weight:700;
+}
+
 @media (max-width:900px){
     .search-form{
         flex-direction:column;
@@ -189,6 +226,24 @@ tbody tr:hover{
 
         <h2>Users</h2>
 
+        <?php if (isset($_GET['msg'])): 
+            $m = $_GET['msg'];
+            if ($m === 'deleted') $success = 'User deleted successfully.';
+            if ($m === 'cannot_delete_admin') $error = 'Admin accounts cannot be deleted.';
+            if ($m === 'not_found') $error = 'User not found.';
+            if ($m === 'forbidden') $error = 'You do not have permission to perform that action.';
+            if ($m === 'error') $error = 'An error occurred while trying to delete the user.';
+        ?>
+            <div class="adm-messages" style="margin-bottom:1rem;">
+                <?php if ($success): ?>
+                    <div class="adm-alert adm-alert-success"><span class="adm-alert-icon">✓</span> <?= htmlspecialchars($success) ?></div>
+                <?php endif; ?>
+                <?php if ($error): ?>
+                    <div class="adm-alert adm-alert-danger"><span class="adm-alert-icon">⚠️</span> <?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
         <form method="get" class="search-form">
             <input type="text" name="search" placeholder="Search by name, or email" 
                    value="<?= htmlspecialchars($search) ?>">
@@ -205,6 +260,7 @@ tbody tr:hover{
         <th>Email</th>
         <th>Role</th>
         <th>Created At</th>
+        <th>Actions</th>
     </tr>
 
     <?php if(count($users) > 0): ?>
@@ -219,11 +275,21 @@ tbody tr:hover{
                 </span>
             </td>
             <td><?= htmlspecialchars($user['created_at']) ?></td>
+            <td>
+                <?php if ($user['is_admin']): ?>
+                    <span style="opacity:0.8;color:#7f1d1d;font-weight:700;">Protected</span>
+                <?php else: ?>
+                    <form method="get" action="userdetails.php" style="display:inline; margin:0;">
+                        <input type="hidden" name="delete" value="<?= (int)$user['id'] ?>">
+                        <button type="submit" class="adm-btn adm-btn-danger" onclick="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">Delete</button>
+                    </form>
+                <?php endif; ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     <?php else: ?>
         <tr>
-            <td colspan="5" style="text-align:center;">No users found.</td>
+            <td colspan="6" style="text-align:center;">No users found.</td>
         </tr>
     <?php endif; ?>
 </table>

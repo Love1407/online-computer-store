@@ -97,9 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($group_id <= 0) $errors[] = "Please select a group.";
     if ($category_id <= 0) $errors[] = "Please select a category.";
+    if ($subcategory_id <= 0) $errors[] = "Please select a subcategory.";
     if ($product_name === '') $errors[] = "Product name cannot be empty.";
     if (!is_numeric($original_price)) $errors[] = "Original price must be numeric.";
-    if ($deal_price !== '' && !is_numeric($deal_price)) $errors[] = "Deal price must be numeric.";
+    if ($deal_price === '' || !is_numeric($deal_price)) $errors[] = "Deal price must be numeric.";
     if ($stock < 0) $errors[] = "Stock cannot be negative.";
 
     if (empty($errors)) {
@@ -171,7 +172,7 @@ require_once __DIR__ . '/includes/sidebar.php';
     <div class="adm-card adm-form-card">
         <div class="adm-card-header">
             <h3 class="adm-card-title">
-                <?= $editData ? "✏️ Edit Product" : "➕ Add New Product" ?>
+                <?= $editData ? " Edit Product" : "➕ Add New Product" ?>
             </h3>
             <?php if ($editData): ?>
                 <a href="products.php" class="adm-btn adm-btn-sm adm-btn-secondary">
@@ -185,16 +186,10 @@ require_once __DIR__ . '/includes/sidebar.php';
                 <input type="hidden" name="id" value="<?= $editData['id'] ?>">
             <?php endif; ?>
 
-            <div class="adm-form-section-title">
-                <span class="adm-section-icon">📂</span>
-                <span>Product Classification</span>
-            </div>
-
             <div class="adm-form-row">
                 <div class="adm-form-group">
                     <label for="group_id" class="adm-label">
-                        <span class="adm-label-text">Group</span>
-                        <span class="adm-label-required">*</span>
+                        <span class="adm-label-text">Group <span class="adm-label-required">*</span></span>
                     </label>
                     <select name="group_id" id="group_id" class="adm-select" onchange="loadCategories(this.value)" required>
                         <option value="">-- Select Group --</option>
@@ -206,8 +201,7 @@ require_once __DIR__ . '/includes/sidebar.php';
 
                 <div class="adm-form-group">
                     <label for="category_id" class="adm-label">
-                        <span class="adm-label-text">Category</span>
-                        <span class="adm-label-required">*</span>
+                        <span class="adm-label-text">Category <span class="adm-label-required">*</span></span>
                     </label>
                     <select name="category_id" id="category_id" class="adm-select" onchange="loadSubcategories(this.value)" required>
                         <option value="">Select Group First</option>
@@ -216,25 +210,18 @@ require_once __DIR__ . '/includes/sidebar.php';
 
                 <div class="adm-form-group">
                     <label for="subcategory_id" class="adm-label">
-                        <span class="adm-label-text">Subcategory</span>
-                        <span class="adm-label-optional">(Optional)</span>
+                        <span class="adm-label-text">Subcategory <span class="adm-label-required">*</span></span>
                     </label>
-                    <select name="subcategory_id" id="subcategory_id" class="adm-select">
-                        <option value="">-- None --</option>
+                    <select name="subcategory_id" id="subcategory_id" class="adm-select" required>
+                        <option value="">Select Category First</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="adm-form-section-title">
-                <span class="adm-section-icon">📝</span>
-                <span>Product Details</span>
             </div>
 
             <div class="adm-form-row">
                 <div class="adm-form-group adm-form-group-full">
                     <label for="product_name" class="adm-label">
-                        <span class="adm-label-text">Product Name</span>
-                        <span class="adm-label-required">*</span>
+                        <span class="adm-label-text">Product Name <span class="adm-label-required">*</span></span>
                     </label>
                     <input type="text" name="product_name" id="product_name" class="adm-input" value="<?= htmlspecialchars($editData['product_name'] ?? '') ?>" placeholder="Enter product name" required>
                 </div>
@@ -249,40 +236,27 @@ require_once __DIR__ . '/includes/sidebar.php';
                 </div>
             </div>
 
-            <div class="adm-form-section-title">
-                <span class="adm-section-icon">💰</span>
-                <span>Pricing & Stock</span>
-            </div>
-
             <div class="adm-form-row">
                 <div class="adm-form-group">
                     <label for="original_price" class="adm-label">
-                        <span class="adm-label-text">Original Price ($)</span>
-                        <span class="adm-label-required">*</span>
+                        <span class="adm-label-text">Original Price ($) <span class="adm-label-required">*</span></span>
                     </label>
                     <input type="number" step="0.01" name="original_price" id="original_price" class="adm-input" value="<?= htmlspecialchars($editData['original_price'] ?? '') ?>" placeholder="0.00" required>
                 </div>
 
                 <div class="adm-form-group">
                     <label for="deal_price" class="adm-label">
-                        <span class="adm-label-text">Deal Price ($)</span>
-                        <span class="adm-label-optional">(Optional)</span>
+                        <span class="adm-label-text">Deal Price ($) <span class="adm-label-required">*</span></span>
                     </label>
-                    <input type="number" step="0.01" name="deal_price" id="deal_price" class="adm-input" value="<?= htmlspecialchars($editData['deal_price'] ?? '') ?>" placeholder="0.00">
+                    <input type="number" step="0.01" name="deal_price" id="deal_price" class="adm-input" value="<?= htmlspecialchars($editData['deal_price'] ?? '') ?>" placeholder="0.00" required>
                 </div>
 
                 <div class="adm-form-group">
                     <label for="stock" class="adm-label">
-                        <span class="adm-label-text">Stock Quantity</span>
-                        <span class="adm-label-required">*</span>
+                        <span class="adm-label-text">Stock Quantity <span class="adm-label-required">*</span></span>
                     </label>
                     <input type="number" name="stock" id="stock" class="adm-input" value="<?= htmlspecialchars($editData['stock'] ?? 0) ?>" min="0" placeholder="0" required>
                 </div>
-            </div>
-
-            <div class="adm-form-section-title">
-                <span class="adm-section-icon">🖼️</span>
-                <span>Product Image</span>
             </div>
 
             <div class="adm-form-row">
@@ -305,17 +279,12 @@ require_once __DIR__ . '/includes/sidebar.php';
                 </div>
             </div>
 
-            <div class="adm-form-section-title">
-                <span class="adm-section-icon">⚙️</span>
-                <span>Additional Options</span>
-            </div>
-
             <div class="adm-form-row">
                 <div class="adm-form-group adm-form-group-full">
                     <label class="adm-checkbox-wrapper">
                         <input type="checkbox" name="is_on_sale" class="adm-checkbox-input" <?= (isset($editData['is_on_sale']) && $editData['is_on_sale'])?'checked':'' ?>>
                         <span class="adm-checkbox-label">
-                            <span class="adm-checkbox-icon">🏷️</span>
+                            <span class="adm-checkbox-icon"></span>
                             Mark this product as "On Sale"
                         </span>
                     </label>
@@ -398,7 +367,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                                 </td>
                                 <td>
                                     <?php if($row['is_on_sale']): ?>
-                                        <span class="adm-badge adm-badge-danger">🏷️ On Sale</span>
+                                        <span class="adm-badge adm-badge-danger">On Sale</span>
                                     <?php else: ?>
                                         <span class="adm-badge adm-badge-success">Regular</span>
                                     <?php endif; ?>
@@ -406,10 +375,10 @@ require_once __DIR__ . '/includes/sidebar.php';
                                 <td>
                                     <div class="adm-action-buttons">
                                         <a href="products.php?edit=<?= $row['id'] ?>" class="adm-btn adm-btn-sm adm-btn-primary" title="Edit Product">
-                                            ✏️ Edit
+                                             Edit
                                         </a>
                                         <a href="products.php?delete=<?= $row['id'] ?>" class="adm-btn adm-btn-sm adm-btn-danger" onclick="return confirm('Are you sure you want to delete this product? This action cannot be undone.')" title="Delete Product">
-                                            🗑️ Delete
+                                             Delete
                                         </a>
                                     </div>
                                 </td>
@@ -448,25 +417,6 @@ require_once __DIR__ . '/includes/sidebar.php';
     padding: 1.25rem;
 }
 
-.adm-form-section-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0;
-    margin-top: 1.25rem;
-    margin-bottom: 0.75rem;
-}
-
-.adm-form-section-title .adm-section-icon {
-    font-size: 1.25rem;
-}
-
-.adm-form-section-title span {
-    font-weight: 800;
-    color: var(--adm-dark);
-    font-size: 1.05rem;
-}
-
 .adm-form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -498,7 +448,7 @@ require_once __DIR__ . '/includes/sidebar.php';
 
 .adm-label .adm-label-required {
     color: var(--adm-danger);
-    margin-left: 8px;
+    margin-right: 8px;
     font-weight: 800;
 }
 
@@ -577,22 +527,6 @@ require_once __DIR__ . '/includes/sidebar.php';
         max-width: 100%;
         height: auto;
     }
-}
-
-.adm-form-section-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--adm-dark);
-    margin: 2rem 0 1.5rem 0;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--adm-gray-lighter);
-}
-
-.adm-section-icon {
-    font-size: 1.5rem;
 }
 
 .adm-label-optional {
@@ -849,31 +783,91 @@ function previewImage(event){
         preview.style.display = 'none';
     }
 }
+function loadCategories(groupId, selectedCat = null) {
+    const catSelect = document.getElementById('category_id');
+    const subSelect = document.getElementById('subcategory_id');
 
-function loadCategories(categoryId, selectedSub=null){
-    const subSelect=document.getElementById('subcategory_id');
-    subSelect.innerHTML="<option>Loading...</option>";
+    if (!catSelect) return;
 
-    if(!categoryId){
-        subSelect.innerHTML="<option value=''>Optional</option>";
+    catSelect.innerHTML = '<option>Loading...</option>';
+    catSelect.disabled = true;
+
+    if (!groupId) {
+        catSelect.innerHTML = '<option value="">Select Group First</option>';
+        catSelect.disabled = false;
+        if (subSelect) subSelect.innerHTML = '<option value="">-- None --</option>';
         return;
     }
 
-    fetch("products.php?fetch_subcategories="+categoryId)
-    .then(res=>res.json())
-    .then(data=>{
-        let html="<option value=''>Optional</option>";
-        data.forEach(row=>{
-            let sel=(selectedSub==row.id)?"selected":"";
-            html+=`<option value="${row.id}" ${sel}>${row.subcategory_name}</option>`;
+    fetch('products.php?fetch_categories=' + encodeURIComponent(groupId))
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
+        .then(data => {
+            let html = '<option value="">-- Select Category --</option>';
+            if (!Array.isArray(data) || data.length === 0) {
+                html = '<option value="">⚠️ No categories for this group</option>';
+            } else {
+                data.forEach(row => {
+                    const sel = (selectedCat != null && String(selectedCat) === String(row.id)) ? ' selected' : '';
+                    html += `<option value="${row.id}"${sel}>${row.category_name}</option>`;
+                });
+            }
+            catSelect.innerHTML = html;
+            catSelect.disabled = false;
+            if (selectedCat && typeof loadSubcategories === 'function') {
+                loadSubcategories(selectedCat);
+            }
+        })
+        .catch(err => {
+            console.error('Error loading categories:', err);
+            catSelect.innerHTML = '<option value="">❌ Error loading categories</option>';
+            catSelect.disabled = false;
         });
-        subSelect.innerHTML=html;
-    });
+}
+
+function loadSubcategories(categoryId, selectedSub = null) {
+    const subSelect = document.getElementById('subcategory_id');
+    if (!subSelect) return;
+
+    subSelect.innerHTML = '<option>Loading...</option>';
+    subSelect.disabled = true;
+
+    if (!categoryId) {
+        subSelect.innerHTML = '<option value="">-- None --</option>';
+        subSelect.disabled = false;
+        return;
+    }
+
+    fetch('products.php?fetch_subcategories=' + encodeURIComponent(categoryId))
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
+        .then(data => {
+            let html = '<option value="">-- None --</option>';
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(row => {
+                    const sel = (selectedSub != null && String(selectedSub) === String(row.id)) ? ' selected' : '';
+                    html += `<option value="${row.id}"${sel}>${row.subcategory_name}</option>`;
+                });
+            }
+            subSelect.innerHTML = html;
+            subSelect.disabled = false;
+        })
+        .catch(err => {
+            console.error('Error loading subcategories:', err);
+            subSelect.innerHTML = '<option value="">❌ Error loading subcategories</option>';
+            subSelect.disabled = false;
+        });
 }
 
 <?php if($editData): ?>
-loadCategories(<?= $editData['group_id'] ?>, <?= $editData['category_id'] ?>);
-loadSubcategories(<?= $editData['category_id'] ?>, <?= $editData['subcategory_id'] ?? 'null' ?>);
+document.addEventListener('DOMContentLoaded', function(){
+    loadCategories(<?= (int)$editData['group_id'] ?>, <?= (int)$editData['category_id'] ?>);
+    loadSubcategories(<?= (int)$editData['category_id'] ?>, <?= isset($editData['subcategory_id']) ? (int)$editData['subcategory_id'] : 'null' ?>);
+});
 <?php endif; ?>
 </script>
 

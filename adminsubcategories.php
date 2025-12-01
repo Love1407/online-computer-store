@@ -93,7 +93,7 @@ require_once __DIR__ . '/includes/sidebar.php';
     <div class="adm-card adm-form-card">
         <div class="adm-card-header">
             <h3 class="adm-card-title">
-                <?= $editData ? "✏️ Edit Subcategory" : "➕ Add New Subcategory" ?>
+                <?= $editData ? " Edit Subcategory" : "➕ Add New Subcategory" ?>
             </h3>
             <?php if ($editData): ?>
                 <a href="adminsubcategories.php" class="adm-btn adm-btn-sm adm-btn-secondary">
@@ -213,13 +213,13 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <a href="adminsubcategories.php?edit=<?= (int)$row['id'] ?>" 
                                            class="adm-btn adm-btn-sm adm-btn-primary"
                                            title="Edit Subcategory">
-                                            ✏️ Edit
+                                             Edit
                                         </a>
                                         <a href="adminsubcategories.php?delete=<?= (int)$row['id'] ?>"
                                            class="adm-btn adm-btn-sm adm-btn-danger"
                                            onclick="return confirm('Are you sure you want to delete this subcategory? This action cannot be undone.')"
                                            title="Delete Subcategory">
-                                            🗑️ Delete
+                                             Delete
                                         </a>
                                     </div>
                                 </td>
@@ -288,6 +288,11 @@ require_once __DIR__ . '/includes/sidebar.php';
     opacity: 0.6;
 }
 
+.adm-label-required {
+    color: var(--adm-danger);
+    font-weight: 800;
+}
+
 .adm-loading {
     display: inline-block;
     width: 16px;
@@ -337,19 +342,25 @@ require_once __DIR__ . '/includes/sidebar.php';
 <script>
 function loadCategories(gid, selectedCat = null) {
     const catEl = document.getElementById('category_id');
+    const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
 
     if (!gid) {
-        catEl.innerHTML = "<option value=''>First, select a group above ↑</option>";
-        catEl.disabled = true;
-        step2.classList.remove('adm-step-active', 'adm-step-completed');
-        document.getElementById('step1').classList.add('adm-step-active');
+        if (catEl) {
+            catEl.innerHTML = "<option value=''>First, select a group above ↑</option>";
+            catEl.disabled = true;
+        }
+        if (step2 && step2.classList) step2.classList.remove('adm-step-active', 'adm-step-completed');
+        if (step1 && step1.classList) step1.classList.add('adm-step-active');
         return;
     }
 
-    document.getElementById('step1').classList.add('adm-step-completed');
-    document.getElementById('step1').classList.remove('adm-step-active');
-    step2.classList.add('adm-step-active');
+    if (step1 && step1.classList) {
+        step1.classList.add('adm-step-completed');
+        step1.classList.remove('adm-step-active');
+    }
+    if (step2 && step2.classList) step2.classList.add('adm-step-active');
     catEl.classList.add('loading');
     catEl.innerHTML = "<option value=''>⏳ Loading categories...</option>";
     catEl.disabled = true;
@@ -371,20 +382,26 @@ function loadCategories(gid, selectedCat = null) {
                 });
             }
             
-            catEl.innerHTML = html;
-            catEl.classList.remove('loading');
-            catEl.disabled = false;
+            if (catEl) {
+                catEl.innerHTML = html;
+                catEl.classList.remove('loading');
+                catEl.disabled = false;
+            }
             if (data.length > 0) {
-                step2.classList.add('adm-step-completed');
-                step2.classList.remove('adm-step-active');
-                document.getElementById('step3').classList.add('adm-step-active');
+                if (step2 && step2.classList) {
+                    step2.classList.add('adm-step-completed');
+                    step2.classList.remove('adm-step-active');
+                }
+                if (step3 && step3.classList) step3.classList.add('adm-step-active');
             }
         })
         .catch(err => {
             console.error('Error loading categories:', err);
-            catEl.innerHTML = "<option value=''>❌ Error loading categories</option>";
-            catEl.classList.remove('loading');
-            catEl.disabled = false;
+            if (catEl) {
+                catEl.innerHTML = "<option value=''>❌ Error loading categories</option>";
+                catEl.classList.remove('loading');
+                catEl.disabled = false;
+            }
             showNotification('Failed to load categories. Please try again.', 'error');
         });
 }
