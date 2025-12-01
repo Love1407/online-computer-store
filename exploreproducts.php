@@ -279,8 +279,8 @@ function renderProducts(items) {
                 <img src="${img}" alt="${escapeHtml(p.product_name)}" class="prdct-card-img">
                 <h4 class="prdct-card-title">${escapeHtml(p.product_name)}</h4>
                 <div class="prdct-card-price-wrapper">
-                    <span class="prdct-card-price">₹${price}</span>
-                    ${oldPrice ? `<span class="prdct-card-old-price">₹${oldPrice}</span>` : ''}
+                    <span class="prdct-card-price">$${price}</span>
+                    ${oldPrice ? `<span class="prdct-card-old-price">$${oldPrice}</span>` : ''}
                 </div>
                 <div class="prdct-card-meta">${escapeHtml(p.group_name || '')} › ${escapeHtml(p.category_name || '')} › ${escapeHtml(p.subcategory_name || '')}</div>
                 ${p.is_on_sale ? '<div class="prdct-card-badge">SALE</div>' : ''}
@@ -371,7 +371,7 @@ function openQuickView(id) {
                 <div class="prdct-modal-details">
                     <h2 class="prdct-modal-title">${escapeHtml(p.product_name)}</h2>
                     <p class="prdct-modal-meta">${escapeHtml(p.category_name || '')} • ${escapeHtml(p.group_name || '')} • ${escapeHtml(p.subcategory_name || '')}</p>
-                    <p class="prdct-modal-price">₹${(p.deal_price || p.original_price).toFixed ? (p.deal_price || p.original_price).toFixed(2) : (p.deal_price || p.original_price)}</p>
+                    <p class="prdct-modal-price">$${(p.deal_price || p.original_price).toFixed ? (p.deal_price || p.original_price).toFixed(2) : (p.deal_price || p.original_price)}</p>
                     <p class="prdct-modal-description">${escapeHtml(p.description || 'No description available.')}</p>
                     <p class="prdct-modal-stock">Stock: ${p.stock} units available</p>
                     <div class="prdct-modal-actions">

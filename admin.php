@@ -14,7 +14,7 @@
                 </div>
                 <div class="adm-stat-icon">💰</div>
             </div>
-            <div class="adm-stat-value">₹1,24,532</div>
+            <div class="adm-stat-value">$1,24,532</div>
             <div class="adm-stat-change adm-up">
                 ↑ 12.5% from last month
             </div>
@@ -105,7 +105,7 @@
                         <td><strong>#ORD-12345</strong></td>
                         <td>John Doe</td>
                         <td>Smart Phone X Pro</td>
-                        <td><strong>₹24,999</strong></td>
+                        <td><strong>$24,999</strong></td>
                         <td><span class="adm-badge adm-badge-success">Delivered</span></td>
                         <td>Dec 01, 2025</td>
                         <td>
@@ -116,7 +116,7 @@
                         <td><strong>#ORD-12344</strong></td>
                         <td>Jane Smith</td>
                         <td>Gaming Laptop Ultra</td>
-                        <td><strong>₹89,999</strong></td>
+                        <td><strong>$89,999</strong></td>
                         <td><span class="adm-badge adm-badge-warning">Processing</span></td>
                         <td>Nov 30, 2025</td>
                         <td>
@@ -127,7 +127,7 @@
                         <td><strong>#ORD-12343</strong></td>
                         <td>Mike Johnson</td>
                         <td>Wireless Headphones</td>
-                        <td><strong>₹2,999</strong></td>
+                        <td><strong>$2,999</strong></td>
                         <td><span class="adm-badge adm-badge-primary">Shipped</span></td>
                         <td>Nov 30, 2025</td>
                         <td>
@@ -138,7 +138,7 @@
                         <td><strong>#ORD-12342</strong></td>
                         <td>Sarah Williams</td>
                         <td>Tablet Pro 12.9"</td>
-                        <td><strong>₹54,999</strong></td>
+                        <td><strong>$54,999</strong></td>
                         <td><span class="adm-badge adm-badge-danger">Cancelled</span></td>
                         <td>Nov 29, 2025</td>
                         <td>
@@ -149,7 +149,7 @@
                         <td><strong>#ORD-12341</strong></td>
                         <td>Robert Brown</td>
                         <td>Smart Watch Series 8</td>
-                        <td><strong>₹18,999</strong></td>
+                        <td><strong>$18,999</strong></td>
                         <td><span class="adm-badge adm-badge-success">Delivered</span></td>
                         <td>Nov 29, 2025</td>
                         <td>
@@ -184,42 +184,42 @@
                     <tr>
                         <td><strong>Smart Phone X Pro</strong></td>
                         <td>Smartphones</td>
-                        <td>₹24,999</td>
+                        <td>$24,999</td>
                         <td><span class="adm-badge adm-badge-success">In Stock</span></td>
                         <td>156 units</td>
-                        <td><strong>₹38,99,844</strong></td>
+                        <td><strong>$38,99,844</strong></td>
                     </tr>
                     <tr>
                         <td><strong>Gaming Laptop Ultra</strong></td>
                         <td>Laptops</td>
-                        <td>₹89,999</td>
+                        <td>$89,999</td>
                         <td><span class="adm-badge adm-badge-warning">Low Stock</span></td>
                         <td>87 units</td>
-                        <td><strong>₹78,29,913</strong></td>
+                        <td><strong>$78,29,913</strong></td>
                     </tr>
                     <tr>
                         <td><strong>Wireless Headphones</strong></td>
                         <td>Accessories</td>
-                        <td>₹2,999</td>
+                        <td>$2,999</td>
                         <td><span class="adm-badge adm-badge-success">In Stock</span></td>
                         <td>234 units</td>
-                        <td><strong>₹7,01,766</strong></td>
+                        <td><strong>$7,01,766</strong></td>
                     </tr>
                     <tr>
                         <td><strong>Tablet Pro 12.9"</strong></td>
                         <td>Tablets</td>
-                        <td>₹54,999</td>
+                        <td>$54,999</td>
                         <td><span class="adm-badge adm-badge-danger">Out of Stock</span></td>
                         <td>64 units</td>
-                        <td><strong>₹35,19,936</strong></td>
+                        <td><strong>$35,19,936</strong></td>
                     </tr>
                     <tr>
                         <td><strong>Smart Watch Series 8</strong></td>
                         <td>Wearables</td>
-                        <td>₹18,999</td>
+                        <td>$18,999</td>
                         <td><span class="adm-badge adm-badge-success">In Stock</span></td>
                         <td>143 units</td>
-                        <td><strong>₹27,16,857</strong></td>
+                        <td><strong>$27,16,857</strong></td>
                     </tr>
                 </tbody>
             </table>

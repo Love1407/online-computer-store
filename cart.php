@@ -139,13 +139,13 @@ foreach ($items as $i) {
                         </div>
                         
                         <div class="prt-cart-details">
-                            <h3 class="prt-title"><?= htmlspecialchars($i['product_name']) ?></h3>
+                            <h3 class="prt-title"><span class="prt-title-text"><?= htmlspecialchars($i['product_name']) ?></span></h3>
                             <div class="prt-price-wrapper">
-                                <span class="prt-price">₹<?= number_format($price, 2) ?></span>
+                                <span class="prt-price">$<?= number_format($price, 2) ?></span>
                                 <?php if ($i['deal_price']): 
                                     $discount = round((($i['original_price'] - $i['deal_price']) / $i['original_price']) * 100);
                                 ?>
-                                    <span class="prt-original-price">₹<?= number_format($i['original_price'], 2) ?></span>
+                                    <span class="prt-original-price">$<?= number_format($i['original_price'], 2) ?></span>
                                     <span class="prt-discount-badge"><?= $discount ?>% OFF</span>
                                 <?php endif; ?>
                             </div>
@@ -175,7 +175,7 @@ foreach ($items as $i) {
                     
                     <div class="prt-summary-row">
                         <span>Subtotal (<?= count($items) ?> items)</span>
-                        <strong>₹<?= number_format($total, 2) ?></strong>
+                        <strong>$<?= number_format($total, 2) ?></strong>
                     </div>
 
                     <div class="prt-summary-row">
@@ -185,12 +185,12 @@ foreach ($items as $i) {
 
                     <div class="prt-summary-row">
                         <span>Tax (18%)</span>
-                        <strong>₹<?= number_format($total * 0.18, 2) ?></strong>
+                        <strong>$<?= number_format($total * 0.18, 2) ?></strong>
                     </div>
 
                     <div class="prt-summary-total">
                         <span>Total</span>
-                        <strong>₹<?= number_format($total * 1.18, 2) ?></strong>
+                        <strong>$<?= number_format($total * 1.18, 2) ?></strong>
                     </div>
 
                     <p class="prt-tax-note">All taxes and shipping included</p>

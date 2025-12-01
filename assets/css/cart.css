@@ -1,9 +1,3 @@
-/* ============================================
-   PROFESSIONAL CART & CHECKOUT STYLES
-   Modern, Clean, Premium Design
-   ============================================ */
-
-/* ===== CART STYLES ===== */
 .prt-cart-wrapper {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
@@ -303,7 +297,6 @@
     letter-spacing: 0.5px;
 }
 
-/* ===== CART SUMMARY ===== */
 .prt-summary {
     background: var(--white);
     border-radius: var(--radius-lg);
@@ -452,7 +445,6 @@
     margin-right: 0.5rem;
 }
 
-/* ===== SKELETON LOADER ===== */
 .prt-skeleton {
     animation: shimmer 1.6s infinite linear;
     background: linear-gradient(
@@ -487,7 +479,6 @@
     border-radius: var(--radius);
 }
 
-/* ===== CHECKOUT STYLES ===== */
 .ckt-wrapper {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
@@ -639,7 +630,6 @@
     transform: translateY(-1px) scale(0.98);
 }
 
-/* ===== CHECKOUT SIDEBAR ===== */
 .ckt-right {
     width: 450px;
 }
@@ -740,7 +730,6 @@
     border: 2px solid var(--primary-color);
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
     .prt-cart-content {
         grid-template-columns: 1fr;

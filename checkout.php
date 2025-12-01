@@ -208,9 +208,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <img src="<?= $img ?>" class="ckt-img" alt="<?= htmlspecialchars($item['name']) ?>">
                         <div>
                             <div class="ckt-prod-title"><?=htmlspecialchars($item['name'])?></div>
-                            <div class="ckt-prod-price">₹<?=number_format($price,2)?></div>
+                            <div class="ckt-prod-price">$<?=number_format($price,2)?></div>
                             <div class="ckt-prod-qty">Quantity: <?=$item['quantity']?></div>
-                            <div style="font-weight: 600; margin-top: 0.25rem;">₹<?=number_format($subtotal,2)?></div>
+                            <div style="font-weight: 600; margin-top: 0.25rem;">$<?=number_format($subtotal,2)?></div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -218,7 +218,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--gray-light);">
                     <div class="ckt-row">
                         <span>Subtotal</span>
-                        <strong>₹<?=number_format($total,2)?></strong>
+                        <strong>$<?=number_format($total,2)?></strong>
                     </div>
                     <div class="ckt-row">
                         <span>Shipping</span>
@@ -226,11 +226,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     </div>
                     <div class="ckt-row">
                         <span>Tax (18%)</span>
-                        <strong>₹<?=number_format($total * 0.18,2)?></strong>
+                        <strong>$<?=number_format($total * 0.18,2)?></strong>
                     </div>
                     <div class="ckt-total">
                         <span>Total</span>
-                        <strong>₹<?=number_format($total * 1.18,2)?></strong>
+                        <strong>$<?=number_format($total * 1.18,2)?></strong>
                     </div>
                 </div>
             </div>

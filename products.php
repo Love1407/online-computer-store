@@ -257,7 +257,7 @@ require_once __DIR__ . '/includes/sidebar.php';
             <div class="adm-form-row">
                 <div class="adm-form-group">
                     <label for="original_price" class="adm-label">
-                        <span class="adm-label-text">Original Price (₹)</span>
+                        <span class="adm-label-text">Original Price ($)</span>
                         <span class="adm-label-required">*</span>
                     </label>
                     <input type="number" step="0.01" name="original_price" id="original_price" class="adm-input" value="<?= htmlspecialchars($editData['original_price'] ?? '') ?>" placeholder="0.00" required>
@@ -265,7 +265,7 @@ require_once __DIR__ . '/includes/sidebar.php';
 
                 <div class="adm-form-group">
                     <label for="deal_price" class="adm-label">
-                        <span class="adm-label-text">Deal Price (₹)</span>
+                        <span class="adm-label-text">Deal Price ($)</span>
                         <span class="adm-label-optional">(Optional)</span>
                     </label>
                     <input type="number" step="0.01" name="deal_price" id="deal_price" class="adm-input" value="<?= htmlspecialchars($editData['deal_price'] ?? '') ?>" placeholder="0.00">
@@ -385,9 +385,9 @@ require_once __DIR__ . '/includes/sidebar.php';
                                 </td>
                                 <td>
                                     <div class="adm-price-display">
-                                        <span class="adm-price-original">₹<?= number_format($row['original_price'], 2) ?></span>
+                                        <span class="adm-price-original">$<?= number_format($row['original_price'], 2) ?></span>
                                         <?php if($row['deal_price']): ?>
-                                            <span class="adm-price-deal">₹<?= number_format($row['deal_price'], 2) ?></span>
+                                            <span class="adm-price-deal">$<?= number_format($row['deal_price'], 2) ?></span>
                                         <?php endif; ?>
                                     </div>
                                 </td>

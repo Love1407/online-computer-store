@@ -108,7 +108,7 @@ try {
                             </td>
                             <td><?= htmlspecialchars($order['user_email']) ?></td>
                             <td>
-                                <span class="adm-amount">₹<?= number_format($order['total'], 2) ?></span>
+                                <span class="adm-amount">$<?= number_format($order['total'], 2) ?></span>
                             </td>
                             <td>
                                 <span class="adm-date"><?= date('M d, Y', strtotime($order['created_at'])) ?></span>
@@ -159,15 +159,15 @@ try {
                                                 <td>
                                                     <span class="adm-qty-badge"><?= $item['quantity'] ?>x</span>
                                                 </td>
-                                                <td>₹<?= number_format($item['price'], 2) ?></td>
-                                                <td><strong>₹<?= number_format($itemSubtotal, 2) ?></strong></td>
+                                                <td>$<?= number_format($item['price'], 2) ?></td>
+                                                <td><strong>$<?= number_format($itemSubtotal, 2) ?></strong></td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
                                             <tr class="adm-items-total">
                                                 <td colspan="3"><strong>Order Subtotal:</strong></td>
-                                                <td><strong class="adm-total-amount">₹<?= number_format($orderSubtotal, 2) ?></strong></td>
+                                                <td><strong class="adm-total-amount">$<?= number_format($orderSubtotal, 2) ?></strong></td>
                                             </tr>
                                         </tfoot>
                                     </table>
