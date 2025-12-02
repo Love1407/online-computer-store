@@ -638,3 +638,14 @@ a {
         padding: 0.75rem 0.5rem;
     }
 }
+
+.adm-menu-icon i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.adm-active .adm-menu-icon i {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
