@@ -38,6 +38,7 @@ try {
 ?>
 
 <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
+<link rel="stylesheet" href="assets/css/adminorderhistory.css">
 
 <div class="adm-content" id="content">
     <div class="adm-page-header">
@@ -120,7 +121,7 @@ try {
                                     type="button" 
                                     class="adm-btn adm-btn-sm adm-btn-primary adm-toggle-items-btn" 
                                     data-order-id="<?= $order['id'] ?>">
-                                    👁️ View Items
+                                    View Items
                                 </button>
                             </td>
                         </tr>
@@ -128,7 +129,7 @@ try {
                         <tr class="adm-order-items-row" id="order-items-<?= $order['id'] ?>" style="display:none;">
                             <td colspan="6" class="adm-items-cell">
                                 <div class="adm-items-container">
-                                    <h4 class="adm-items-title">📦 Order Items</h4>
+                                    <h4 class="adm-items-title">Order Items</h4>
                                     <table class="adm-items-table">
                                         <thead>
                                             <tr>
@@ -194,225 +195,6 @@ try {
     </div>
 </div>
 
-<style>
-.adm-search-form {
-    margin: 0;
-}
-
-.adm-search-wrapper {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.adm-search-field {
-    flex: 1;
-    min-width: 300px;
-    padding: 0.875rem 1.25rem;
-    border: 2px solid var(--adm-gray-light);
-    border-radius: var(--adm-radius);
-    font-size: 1rem;
-    transition: var(--adm-transition);
-    background: var(--adm-gray-lighter);
-}
-
-.adm-search-field:focus {
-    outline: none;
-    border-color: var(--adm-primary);
-    background: var(--adm-white);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.adm-count-badge {
-    background: linear-gradient(135deg, var(--adm-primary), var(--adm-primary-light));
-    color: var(--adm-white);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-left: 0.5rem;
-}
-
-.adm-search-indicator {
-    color: var(--adm-gray);
-    font-size: 0.9rem;
-}
-
-.adm-search-indicator strong {
-    color: var(--adm-primary);
-}
-
-.adm-orders-table tbody tr.adm-order-row {
-    cursor: pointer;
-    transition: var(--adm-transition);
-}
-
-.adm-orders-table tbody tr.adm-order-row:hover {
-    background: rgba(37, 99, 235, 0.02);
-}
-
-.adm-order-id {
-    font-weight: 800;
-    color: var(--adm-primary);
-    font-size: 0.95rem;
-}
-
-.adm-customer-info strong {
-    color: var(--adm-dark);
-    font-weight: 700;
-}
-
-.adm-amount {
-    font-weight: 900;
-    color: var(--adm-secondary);
-    font-size: 1.1rem;
-}
-
-.adm-date {
-    color: var(--adm-gray-dark);
-    font-weight: 600;
-}
-
-.adm-time {
-    color: var(--adm-gray);
-    font-size: 0.8rem;
-}
-
-.adm-order-items-row {
-    background: var(--adm-gray-lighter) !important;
-}
-
-.adm-items-cell {
-    padding: 0 !important;
-}
-
-.adm-items-container {
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.03), rgba(255, 255, 255, 1));
-    border-left: 4px solid var(--adm-primary);
-}
-
-.adm-items-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--adm-dark);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.adm-items-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--adm-white);
-    border-radius: var(--adm-radius);
-    overflow: hidden;
-    box-shadow: var(--adm-shadow);
-}
-
-.adm-items-table thead {
-    background: linear-gradient(135deg, var(--adm-primary), var(--adm-primary-light));
-    color: var(--adm-white);
-}
-
-.adm-items-table th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.adm-items-table tbody td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--adm-gray-lighter);
-}
-
-.adm-items-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.adm-items-table tbody tr:hover {
-    background: var(--adm-gray-lighter);
-}
-
-.adm-qty-badge {
-    background: rgba(37, 99, 235, 0.1);
-    color: var(--adm-primary);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 0.85rem;
-}
-
-.adm-items-total {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.05));
-}
-
-.adm-items-total td {
-    padding: 1.25rem 1rem !important;
-    font-size: 1.1rem;
-}
-
-.adm-total-amount {
-    color: var(--adm-primary);
-    font-size: 1.25rem;
-}
-
-.adm-empty-state {
-    text-align: center;
-    padding: 5rem 2rem;
-}
-
-.adm-empty-icon {
-    font-size: 5rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.5;
-}
-
-.adm-empty-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: var(--adm-dark);
-    margin-bottom: 0.5rem;
-}
-
-.adm-empty-text {
-    color: var(--adm-gray);
-    font-size: 1.1rem;
-}
-
-@media (max-width: 768px) {
-    .adm-search-wrapper {
-        flex-direction: column;
-    }
-
-    .adm-search-field {
-        width: 100%;
-    }
-
-    .adm-btn {
-        width: 100%;
-    }
-
-    .adm-items-container {
-        padding: 1rem;
-    }
-
-    .adm-items-table {
-        font-size: 0.85rem;
-    }
-
-    .adm-items-table th,
-    .adm-items-table td {
-        padding: 0.75rem 0.5rem;
-    }
-}
-</style>
-
 <script>
 document.querySelectorAll('.adm-toggle-items-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -421,7 +203,7 @@ document.querySelectorAll('.adm-toggle-items-btn').forEach(btn => {
         
         if (itemsRow.style.display === 'table-row') {
             itemsRow.style.display = 'none';
-            this.innerHTML = '👁️ View Items';
+            this.innerHTML = 'View Items';
             this.classList.remove('adm-btn-secondary');
             this.classList.add('adm-btn-primary');
         } else {
@@ -429,12 +211,12 @@ document.querySelectorAll('.adm-toggle-items-btn').forEach(btn => {
                 row.style.display = 'none';
             });
             document.querySelectorAll('.adm-toggle-items-btn').forEach(otherBtn => {
-                otherBtn.innerHTML = '👁️ View Items';
+                otherBtn.innerHTML = 'View Items';
                 otherBtn.classList.remove('adm-btn-secondary');
                 otherBtn.classList.add('adm-btn-primary');
             });
             itemsRow.style.display = 'table-row';
-            this.innerHTML = '🔽 Hide Items';
+            this.innerHTML = 'Hide Items';
             this.classList.remove('adm-btn-primary');
             this.classList.add('adm-btn-secondary');
         }

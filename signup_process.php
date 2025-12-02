@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
 
-
 if($_SERVER['REQUEST_METHOD'] !== 'POST'){
 header('Location: signup.php'); exit;
 }
@@ -17,14 +16,11 @@ if(!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Valid email is requi
 if(strlen($pass) < 8) $errors[] = 'Password must be at least 8 characters';
 if(!preg_match('/[A-Za-z]/', $pass) || !preg_match('/\d/', $pass)) $errors[] = 'Password must contain letters and numbers';
 if($pass !== $confirm) $errors[] = 'Passwords do not match';
-
-
 if($errors){
 $msg = urlencode(implode('. ', $errors));
 header('Location: signup.php?error=' . $msg);
 exit;
 }
-
 
 $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
 $stmt->execute([$email]);
@@ -36,7 +32,6 @@ exit;
 $hash = password_hash($pass, PASSWORD_DEFAULT);
 $insert = $pdo->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
 $insert->execute([$name, $email, $hash]);
-
 
 header('Location: signup.php?success=' . urlencode('Account created. Please login.'));
 exit;

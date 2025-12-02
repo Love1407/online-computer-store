@@ -70,6 +70,7 @@ $list = $pdo->query("
 
 require_once __DIR__ . '/includes/sidebar.php';
 ?>
+<link rel="stylesheet" href="assets/css/adminsubcategories.css">
 
 <div class="adm-content" id="content">
     <div class="adm-page-header">
@@ -111,7 +112,6 @@ require_once __DIR__ . '/includes/sidebar.php';
                 <div class="adm-form-row">
                     <div class="adm-form-group adm-form-group-full">
                         <label for="group_id" class="adm-label">
-                            <span class="adm-label-icon">📁</span>
                             <span class="adm-label-text">Step 1: Select Group</span>
                             <span class="adm-label-required">*</span>
                         </label>
@@ -130,12 +130,11 @@ require_once __DIR__ . '/includes/sidebar.php';
                 <div class="adm-form-row">
                     <div class="adm-form-group adm-form-group-full">
                         <label for="category_id" class="adm-label">
-                            <span class="adm-label-icon">📂</span>
                             <span class="adm-label-text">Step 2: Select Category</span>
                             <span class="adm-label-required">*</span>
                         </label>
                         <select name="category_id" id="category_id" class="adm-select adm-select-large" required disabled>
-                            <option value="">First, select a group above ↑</option>
+                            <option value="">First, select a group above</option>
                         </select>
                     </div>
                 </div>
@@ -143,7 +142,6 @@ require_once __DIR__ . '/includes/sidebar.php';
                 <div class="adm-form-row">
                     <div class="adm-form-group adm-form-group-full">
                         <label for="subcategory_name" class="adm-label">
-                            <span class="adm-label-icon">📄</span>
                             <span class="adm-label-text">Step 3: Enter Subcategory Name</span>
                             <span class="adm-label-required">*</span>
                         </label>
@@ -161,12 +159,12 @@ require_once __DIR__ . '/includes/sidebar.php';
 
             <div class="adm-form-actions">
                 <button type="submit" class="adm-btn adm-btn-primary adm-btn-lg">
-                    <?= $editData ? "💾 Update Subcategory" : "➕ Add Subcategory" ?>
+                    <?= $editData ? "Update Subcategory" : "Add Subcategory" ?>
                 </button>
 
                 <?php if ($editData): ?>
                     <a href="adminsubcategories.php" class="adm-btn adm-btn-secondary adm-btn-lg">
-                        ✕ Cancel
+                       Cancel
                     </a>
                 <?php endif; ?>
             </div>
@@ -238,107 +236,6 @@ require_once __DIR__ . '/includes/sidebar.php';
     </div>
 </div>
 
-<style>
-.adm-form-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.adm-form-row {
-    display: flex;
-    gap: 2rem;
-}
-
-.adm-form-group-full {
-    flex: 1;
-}
-
-.adm-label-icon {
-    font-size: 1.25rem;
-    margin-right: 0.5rem;
-}
-
-.adm-select-large,
-.adm-input-large {
-    padding: 1rem 1.5rem;
-    font-size: 1.05rem;
-    font-weight: 500;
-}
-
-.adm-form-grid-3 {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-.adm-category-tag {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));
-    color: #1e40af;
-    padding: 0.5rem 1rem;
-    border-radius: var(--adm-radius);
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.adm-select[disabled],
-.adm-input[disabled] {
-    background: var(--adm-gray-lighter);
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.adm-label-required {
-    color: var(--adm-danger);
-    font-weight: 800;
-}
-
-.adm-loading {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--adm-gray-light);
-    border-top-color: var(--adm-primary);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.adm-select.loading {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%232563eb' d='M8 0a8 8 0 100 16A8 8 0 008 0zm0 14a6 6 0 110-12 6 6 0 010 12z' opacity='.3'/%3E%3Cpath fill='%232563eb' d='M14 8a6 6 0 00-6-6V0a8 8 0 018 8h-2z'/%3E%3C/svg%3E");
-    background-size: 16px;
-    animation: spin 0.6s linear infinite;
-}
-
-@media (max-width: 768px) {
-    .adm-form-steps {
-        padding: 1.5rem 1rem;
-    }
-
-    .adm-step-number {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-
-    .adm-step-line {
-        width: 50px;
-        margin: 0 0.5rem;
-    }
-
-    .adm-step-label {
-        font-size: 0.8rem;
-    }
-
-    .adm-form-row {
-        flex-direction: column;
-    }
-}
-</style>
-
 <script>
 function loadCategories(gid, selectedCat = null) {
     const catEl = document.getElementById('category_id');
@@ -398,7 +295,7 @@ function loadCategories(gid, selectedCat = null) {
         .catch(err => {
             console.error('Error loading categories:', err);
             if (catEl) {
-                catEl.innerHTML = "<option value=''>❌ Error loading categories</option>";
+                catEl.innerHTML = "<option value=''> Error loading categories</option>";
                 catEl.classList.remove('loading');
                 catEl.disabled = false;
             }

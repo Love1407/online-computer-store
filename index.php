@@ -56,11 +56,8 @@ $categories = [
 ?>
 
 <section class="slider">
-
     <button class="arrow left" onclick="prevSlide()">❮</button>
-
     <div class="slides">
-
         <div class="slide active">
             <div class="slide-content">
                 <img src="assets/images/banner/1.png" class="slide-img">
@@ -105,9 +102,7 @@ $categories = [
 <section class="category-box">
     
     <?php
-    // Loop through the categories array and generate a card for each
     foreach ($categories as $category) {
-        // 1. Define the target URL with the group ID
         $target_url = 'exploreproducts.php?group=' . urlencode($category['id']);
     ?>
     
@@ -120,7 +115,6 @@ $categories = [
             >
             
             <h2><?php echo htmlspecialchars($category['name']); ?></h2>
-            
             <button class="blue-btn" onclick="event.preventDefault(); window.location.href='<?= htmlspecialchars($target_url) ?>';">Shop Now</button>
         </div>
     </a>
@@ -139,7 +133,7 @@ $categories = [
 
         <?php  
         foreach ($products as $p) {
-            $tag = "SALE"; // Because these are all is_on_sale = 1
+            $tag = "SALE";
             $img = $p['image_url'] ?: 'default.png';
 
             echo "
@@ -155,7 +149,6 @@ $categories = [
 
     </div>
 </section>
-
 
 <section class="red-banner">
     <div class="red-content">
@@ -185,7 +178,6 @@ $categories = [
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-
 
 <script>
 let currentSlide = 0;

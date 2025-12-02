@@ -50,11 +50,8 @@ document.getElementById('signupForm').addEventListener('submit', function(e){
     var email = document.getElementById('email').value.trim();
     var pass = document.getElementById('password').value;
     var confirm = document.getElementById('confirm_password').value;
-
     var emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     var passReg = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-
-    // Clear previous custom validity
     document.querySelectorAll('input').forEach(input => input.setCustomValidity(''));
 
     if(!name){ 
@@ -87,8 +84,6 @@ function showError(fieldId, message) {
     field.setCustomValidity(message);
     field.reportValidity();
     field.focus();
-    
-    // Clear error when user starts typing
     field.addEventListener('input', function() {
         field.setCustomValidity('');
     }, { once: true });

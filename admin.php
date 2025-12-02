@@ -1,17 +1,13 @@
 <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
-<?php
-require_once __DIR__ . '/includes/db.php'; 
-// ---- GET TOTAL ORDERS ----
+<?php require_once __DIR__ . '/includes/db.php'; 
 $stmt = $pdo->prepare("SELECT COUNT(*) AS total_orders FROM orders");
 $stmt->execute();
 $total_orders = $stmt->fetch(PDO::FETCH_ASSOC)['total_orders'] ?? 0;
 
-// ---- GET TOTAL PRODUCTS ----
 $stmt = $pdo->prepare("SELECT COUNT(*) AS total_products FROM products");
 $stmt->execute();
 $total_products = $stmt->fetch(PDO::FETCH_ASSOC)['total_products'] ?? 0;
 
-// ---- GET TOTAL ACTIVE USERS ----
 $stmt = $pdo->prepare("SELECT COUNT(*) AS total_users FROM users");
 $stmt->execute();
 $total_users = $stmt->fetch(PDO::FETCH_ASSOC)['total_users'] ?? 0;

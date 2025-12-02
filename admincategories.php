@@ -80,6 +80,7 @@ try {
 
 require_once __DIR__ . '/includes/sidebar.php';
 ?>
+<link rel="stylesheet" href="assets/css/admincategories.css">
 
 <div class="adm-content" id="content">
     <div class="adm-page-header">
@@ -161,12 +162,12 @@ require_once __DIR__ . '/includes/sidebar.php';
 
             <div class="adm-form-actions">
                 <button type="submit" class="adm-btn adm-btn-primary adm-btn-lg">
-                    <?= $editData ? "💾 Update Category" : "➕ Add Category" ?>
+                    <?= $editData ? "Update Category" : "Add Category" ?>
                 </button>
 
                 <?php if ($editData): ?>
                     <a href="admincategories.php" class="adm-btn adm-btn-secondary adm-btn-lg">
-                        ✕ Cancel
+                        Cancel
                     </a>
                 <?php endif; ?>
             </div>
@@ -233,159 +234,6 @@ require_once __DIR__ . '/includes/sidebar.php';
         <?php endif; ?>
     </div>
 </div>
-
-<style>
-.adm-form-card {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), var(--adm-white));
-    border-left: 5px solid var(--adm-primary);
-}
-
-.adm-messages {
-    margin-bottom: 2rem;
-}
-
-.adm-alert {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    border-radius: var(--adm-radius-lg);
-    margin-bottom: 1rem;
-    font-weight: 600;
-    box-shadow: var(--adm-shadow);
-}
-
-.adm-alert-icon {
-    font-size: 1.5rem;
-}
-
-.adm-alert-danger {
-    background: rgba(239, 68, 68, 0.1);
-    border-left: 4px solid var(--adm-danger);
-    color: #991b1b;
-}
-
-.adm-alert-success {
-    background: rgba(16, 185, 129, 0.1);
-    border-left: 4px solid var(--adm-secondary);
-    color: #065f46;
-}
-
-.adm-form {
-    margin: 0;
-}
-
-.adm-form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.adm-form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.adm-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-}
-
-.adm-label-text {
-    font-weight: 700;
-    color: var(--adm-dark);
-    font-size: 0.95rem;
-}
-
-.adm-label-required {
-    color: var(--adm-danger);
-    font-weight: 800;
-}
-
-.adm-input,
-.adm-select {
-    width: 100%;
-    padding: 0.875rem 1.25rem;
-    border: 2px solid var(--adm-gray-light);
-    border-radius: var(--adm-radius);
-    font-size: 1rem;
-    transition: var(--adm-transition);
-    background: var(--adm-gray-lighter);
-    font-family: inherit;
-}
-
-.adm-input:focus,
-.adm-select:focus {
-    outline: none;
-    border-color: var(--adm-primary);
-    background: var(--adm-white);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-    transform: translateY(-1px);
-}
-
-.adm-select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23374151' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 3rem;
-}
-
-.adm-form-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.adm-id-badge {
-    background: rgba(37, 99, 235, 0.1);
-    color: var(--adm-primary);
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 0.85rem;
-}
-
-.adm-group-tag {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.05));
-    color: #92400e;
-    padding: 0.5rem 1rem;
-    border-radius: var(--adm-radius);
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.adm-action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-    .adm-form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .adm-form-actions {
-        flex-direction: column;
-    }
-
-    .adm-action-buttons {
-        flex-direction: column;
-    }
-
-    .adm-btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

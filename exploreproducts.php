@@ -59,10 +59,6 @@ if (isset($_GET['fetch_products'])) {
 
         $where = [];
         $params = [];
-
-        // ----------------------------
-        // APPLY FILTERS
-        // ----------------------------
         if ($group !== null) { 
             $where[] = "p.group_id = ?"; 
             $params[] = $group; 
@@ -96,27 +92,14 @@ if (isset($_GET['fetch_products'])) {
             $where[] = "COALESCE(p.deal_price, p.original_price) <= ?"; 
             $params[] = $max_price; 
         }
-
-        // ----------------------------
-        // NEW: STOCK FILTER
-        // ----------------------------
         $where[] = "p.stock > 0";
 
-        // Build WHERE SQL
         $whereSql = count($where) ? "WHERE " . implode(" AND ", $where) : "";
-
-        // ----------------------------
-        // COUNT TOTAL
-        // ----------------------------
         $countSql = "SELECT COUNT(*) FROM products p $whereSql";
         $countStmt = $pdo->prepare($countSql);
         $countStmt->execute($params);
         $total = (int)$countStmt->fetchColumn();
         $totalPages = max(1, (int)ceil($total / $limit));
-
-        // ----------------------------
-        // SORTING
-        // ----------------------------
         switch ($sort) {
             case 'price_asc':
                 $order = "ORDER BY COALESCE(p.deal_price, p.original_price) ASC";
@@ -129,10 +112,6 @@ if (isset($_GET['fetch_products'])) {
             default:
                 $order = "ORDER BY p.created_at DESC";
         }
-
-        // ----------------------------
-        // FETCH PRODUCTS
-        // ----------------------------
         $sql = "
             SELECT 
                 p.id, p.product_name, p.description, 
@@ -154,10 +133,6 @@ if (isset($_GET['fetch_products'])) {
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         $prods = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // ----------------------------
-        // OUTPUT RESPONSE
-        // ----------------------------
         json_out([
             'ok' => true,
             'products' => $prods,
@@ -171,7 +146,6 @@ if (isset($_GET['fetch_products'])) {
         json_out(['ok' => false, 'error' => $e->getMessage()]);
     }
 }
-
 
 $groups = $pdo->query("SELECT id, name FROM groups_h ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -506,25 +480,16 @@ function getUrlParameter(name) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if a group ID was passed in the URL
     const initialGroup = getUrlParameter('group');
     if (initialGroup) {
         state.group = initialGroup;
-        filterGroup.value = initialGroup; // Set the dropdown to match the selected group
-        // Trigger the change event to load categories/subcategories and fetch products
+        filterGroup.value = initialGroup;
         filterGroup.dispatchEvent(new Event('change'));
     }
-    
-    // Fallback to initial fetch if no group is set, or if the change event didn't trigger a fetch
     if (!initialGroup) {
         fetchAndRender(1);
     } else {
-        // If initialGroup is set, the 'change' event listener should trigger fetchAndRender(1) 
-        // after fetching categories, but to ensure an immediate fetch, you can explicitly call it:
         fetchAndRender(1); 
     }
 });
-// document.addEventListener('DOMContentLoaded', () => {
-//     fetchAndRender(1);
-// });
 </script>
