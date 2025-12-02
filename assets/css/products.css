@@ -215,8 +215,8 @@ body {
 
 .prdct-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
     margin-bottom: 40px;
 }
 
@@ -288,13 +288,13 @@ body {
 }
 
 .prdct-card-price {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     color: #10b981;
 }
 
 .prdct-card-old-price {
-    font-size: 16px;
+    font-size:14px;
     color: #a0aec0;
     text-decoration: line-through;
 }
@@ -304,9 +304,6 @@ body {
     color: #718096;
     margin: 0 15px 15px;
     display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
 .prdct-card-controls {
@@ -320,7 +317,7 @@ body {
 .prdct-btn-view,
 .prdct-btn-cart {
     flex: 1;
-    padding: 10px 16px;
+    padding: 10px 0px;
     border: none;
     border-radius: 8px;
     font-size: 14px;
