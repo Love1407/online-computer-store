@@ -149,11 +149,6 @@ require_once __DIR__ . '/includes/sidebar.php';
 <div class="adm-content" id="content">
     <div class="adm-page-header">
         <h1 class="adm-page-title">Product Management</h1>
-        <div class="adm-breadcrumb">
-            <a href="admin.php">Dashboard</a>
-            <span>/</span>
-            <span>Products</span>
-        </div>
     </div>
 
     <?php if (!empty($errors) || $success): ?>
@@ -447,7 +442,7 @@ function loadCategories(groupId, selectedCat = null) {
         .then(data => {
             let html = '<option value="">-- Select Category --</option>';
             if (!Array.isArray(data) || data.length === 0) {
-                html = '<option value="">⚠️ No categories for this group</option>';
+                html = '<option value="">No categories for this group</option>';
             } else {
                 data.forEach(row => {
                     const sel = (selectedCat != null && String(selectedCat) === String(row.id)) ? ' selected' : '';

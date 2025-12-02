@@ -85,11 +85,6 @@ require_once __DIR__ . '/includes/sidebar.php';
 <div class="adm-content" id="content">
     <div class="adm-page-header">
         <h1 class="adm-page-title">Category Management</h1>
-        <div class="adm-breadcrumb">
-            <a href="admin.php">Dashboard</a>
-            <span>/</span>
-            <span>Categories</span>
-        </div>
     </div>
 
     <?php if (!empty($errors) || $success): ?>
@@ -235,42 +230,7 @@ require_once __DIR__ . '/includes/sidebar.php';
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const successAlerts = document.querySelectorAll('.adm-alert-success');
-    successAlerts.forEach(alert => {
-        setTimeout(() => {
-            alert.style.transition = 'all 0.5s ease';
-            alert.style.opacity = '0';
-            alert.style.transform = 'translateY(-20px)';
-            setTimeout(() => alert.remove(), 500);
-        }, 5000);
-    });
-});
-
-let formChanged = false;
-const form = document.querySelector('.adm-form');
-if (form) {
-    const inputs = form.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-        input.addEventListener('change', () => {
-            formChanged = true;
-        });
-    });
-
-    window.addEventListener('beforeunload', (e) => {
-        if (formChanged && !form.dataset.submitted) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
-    });
-
-    form.addEventListener('submit', () => {
-        form.dataset.submitted = 'true';
-        formChanged = false;
-    });
-}
-</script>
+<script src="assets/js/admincategories.js"></script>
 
 </body>
 </html>

@@ -305,7 +305,7 @@ function renderProducts(items) {
     productsContainer.innerHTML = items.map(p => {
         const price = p.deal_price ? parseFloat(p.deal_price).toFixed(2) : parseFloat(p.original_price).toFixed(2);
         const oldPrice = p.deal_price ? parseFloat(p.original_price).toFixed(2) : null;
-        const img = p.image_url ? p.image_url : 'assets/placeholder.png';
+        const img = p.image_url ? p.image_url : 'assets/images/noimg.png';
         return `
             <div class="prdct-card" data-id="${p.id}">
                 <img src="${img}" alt="${escapeHtml(p.product_name)}" class="prdct-card-img">
