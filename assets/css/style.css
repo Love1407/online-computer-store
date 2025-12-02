@@ -1196,9 +1196,8 @@ a {
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            /* flex-grow: 1, flex-shrink: 1, basis: 280px */
             flex: 1 1 280px; 
-            min-width: 280px; /* Minimum width before wrapping */
+            min-width: 280px;
             transition: transform 0.2s;
         }
 
@@ -1231,30 +1230,26 @@ a {
             font-size: 1em;
             text-transform: uppercase;
             transition: background-color 0.2s;
-            width: 100%; /* Make button full width for better mobile tap target */
-            max-width: 200px; /* Limit button size on large screens */
+            width: 100%;
+            max-width: 200px;
         }
 
         .blue-btn:hover {
             background-color: #0056b3;
         }
         
-
-        /* --- Responsiveness (Mobile View) --- */
-        /* Media Query for screens smaller than 600px */
         @media (max-width: 600px) {
             .category-box {
-                padding: 10px; /* Reduced padding on small screens */
+                padding: 10px;
                 grid-template-columns: auto;
             }
 
             .cat-card {
-                /* On small screens, the card takes up the full width (minus padding/gap) */
                 flex: 1 1 100%; 
-                min-width: unset; /* Remove min-width constraint */
+                min-width: unset;
             }
             
             .blue-btn {
-                max-width: 100%; /* Button is full width on mobile */
+                max-width: 100%;
             }
         }

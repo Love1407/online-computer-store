@@ -105,6 +105,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stock < 0) $errors[] = "Stock cannot be negative.";
 
     if (empty($errors)) {
+        if (empty($image_url)) {
+            $image_url = 'assets/images/noimg.png';
+        }
         if ($editData) {
             $stmt = $pdo->prepare("
                 UPDATE products SET 
@@ -399,6 +402,37 @@ require_once __DIR__ . '/includes/sidebar.php';
 </div>
 
 <style>
+.adm-messages {
+    margin: 1rem 0 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.adm-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+.adm-alert-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+.adm-alert-success {
+    background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%);
+    border: 1px solid rgba(16,185,129,0.18);
+    color: #065f46;
+}
+.adm-alert-danger {
+    background: linear-gradient(180deg, #fff1f2 0%, #ffffff 100%);
+    border: 1px solid rgba(239,68,68,0.14);
+    color: #7f1d1d;
+}
+.adm-alert span { display: inline-block; vertical-align: middle; }
+
    #admSidebar ~ .adm-content {
     margin-left: var(--adm-sidebar-width, 280px);
     transition: margin-left .28s ease;

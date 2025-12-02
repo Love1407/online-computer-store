@@ -1,7 +1,3 @@
-/* ========================================
-   PRODUCTS PAGE - PROFESSIONAL STYLES
-   ======================================== */
-
 * {
     margin: 0;
     padding: 0;
@@ -15,10 +11,6 @@ body {
     line-height: 1.6;
 }
 
-/* ========================================
-   MAIN WRAPPER & LAYOUT
-   ======================================== */
-
 .prdct-wrapper {
     max-width: 1400px;
     margin: 0 auto;
@@ -30,10 +22,6 @@ body {
     gap: 30px;
     align-items: flex-start;
 }
-
-/* ========================================
-   SIDEBAR - FIXED FILTERS
-   ======================================== */
 
 .prdct-sidebar {
     width: 320px;
@@ -48,7 +36,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Custom Scrollbar for Sidebar */
 .prdct-sidebar::-webkit-scrollbar {
     width: 6px;
 }
@@ -75,10 +62,6 @@ body {
     padding-bottom: 15px;
     border-bottom: 3px solid #3b82f6;
 }
-
-/* ========================================
-   FILTER CONTROLS
-   ======================================== */
 
 .prdct-filters {
     display: flex;
@@ -225,18 +208,10 @@ body {
     margin: 10px 0 0 0;
 }
 
-/* ========================================
-   MAIN CONTENT AREA
-   ======================================== */
-
 .prdct-main {
     flex: 1;
     min-width: 0;
 }
-
-/* ========================================
-   PRODUCT GRID
-   ======================================== */
 
 .prdct-grid {
     display: grid;
@@ -380,10 +355,6 @@ body {
     display: flex;
 }
 
-/* ========================================
-   LOADING & ERROR STATES
-   ======================================== */
-
 .prdct-loading,
 .prdct-error,
 .prdct-no-results {
@@ -397,10 +368,6 @@ body {
 .prdct-error {
     color: #ef4444;
 }
-
-/* ========================================
-   PAGINATION
-   ======================================== */
 
 .prdct-pager {
     display: flex;
@@ -436,10 +403,6 @@ body {
     color: white;
     border-color: #3b82f6;
 }
-
-/* ========================================
-   MODAL / QUICK VIEW
-   ======================================== */
 
 .prdct-modal-overlay {
     position: fixed;
@@ -602,10 +565,6 @@ body {
 .prdct-modal-btn-close:hover {
     background: #cbd5e0;
 }
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
 
 @media (max-width: 1200px) {
     .prdct-grid {

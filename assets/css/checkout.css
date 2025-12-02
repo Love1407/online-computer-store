@@ -1,7 +1,3 @@
-/* ============================================
-   CHECKOUT PAGE - MODERN DESIGN STYLESHEET
-   ============================================ */
-
 :root {
     --primary-color: #667eea;
     --primary-dark: #764ba2;
@@ -12,10 +8,6 @@
     --gray-light: #e0e0e0;
     --bg-light: #f8f9fa;
 }
-
-/* ============================================
-   MAIN WRAPPER
-   ============================================ */
 
 .ckt-wrapper {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -44,10 +36,6 @@
     }
 }
 
-/* ============================================
-   LEFT SECTION - FORM
-   ============================================ */
-
 .ckt-left {
     background: #ffffff;
     border-radius: 20px;
@@ -68,10 +56,6 @@
 .ckt-heading:first-child {
     margin-top: 0;
 }
-
-/* ============================================
-   FORM GROUPS
-   ============================================ */
 
 .ckt-form-group {
     margin-bottom: 20px;
@@ -113,10 +97,6 @@
     color: #999;
 }
 
-/* ============================================
-   MULTI-COLUMN LAYOUTS
-   ============================================ */
-
 .ckt-2col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -128,10 +108,6 @@
     grid-template-columns: 2fr 1fr 1fr;
     gap: 20px;
 }
-
-/* ============================================
-   ERROR MESSAGES
-   ============================================ */
 
 .ckt-error-list {
     background: #fff5f5;
@@ -151,10 +127,6 @@
 .ckt-error-list div:last-child {
     margin-bottom: 0;
 }
-
-/* ============================================
-   SUBMIT BUTTON
-   ============================================ */
 
 .ckt-pay-btn {
     width: 100%;
@@ -194,10 +166,6 @@
     box-shadow: none;
 }
 
-/* ============================================
-   RIGHT SECTION - ORDER SUMMARY
-   ============================================ */
-
 .ckt-right {
     position: sticky;
     top: 20px;
@@ -220,10 +188,6 @@
     padding-bottom: 15px;
     border-bottom: 3px solid var(--primary-color);
 }
-
-/* ============================================
-   SUMMARY ITEMS
-   ============================================ */
 
 .ckt-summary-item {
     display: grid;
@@ -269,10 +233,6 @@
     font-size: 13px;
 }
 
-/* ============================================
-   SUMMARY CALCULATIONS
-   ============================================ */
-
 .ckt-row {
     display: flex;
     justify-content: space-between;
@@ -304,10 +264,6 @@
     font-size: 26px;
 }
 
-/* ============================================
-   PAYMENT ICONS
-   ============================================ */
-
 .ckt-payment-icons {
     display: flex;
     gap: 10px;
@@ -323,10 +279,6 @@
     width: auto;
 }
 
-/* ============================================
-   SECURITY BADGE
-   ============================================ */
-
 .ckt-security-note {
     text-align: center;
     margin-top: 20px;
@@ -340,10 +292,6 @@
 .ckt-security-note::before {
     content: '🔒 ';
 }
-
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
 
 @media (max-width: 1200px) {
     .ckt-container {
@@ -466,10 +414,6 @@
     }
 }
 
-/* ============================================
-   ANIMATIONS & INTERACTIONS
-   ============================================ */
-
 .ckt-input:invalid:not(:placeholder-shown) {
     border-color: var(--danger-color);
 }
@@ -487,10 +431,6 @@
 .ckt-error-list {
     animation: shake 0.4s ease-in-out;
 }
-
-/* ============================================
-   LOADING STATE
-   ============================================ */
 
 .ckt-pay-btn.loading {
     pointer-events: none;
@@ -515,10 +455,6 @@
     to { transform: translateY(-50%) rotate(360deg); }
 }
 
-/* ============================================
-   CARD ICONS
-   ============================================ */
-
 .ckt-form-group.card-input {
     position: relative;
 }
@@ -531,10 +467,6 @@
     font-size: 20px;
     opacity: 0.5;
 }
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
 
 @media print {
     .ckt-wrapper {
