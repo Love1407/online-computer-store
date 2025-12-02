@@ -19,37 +19,37 @@ $categories = [
         'id' => 1,
         'name' => 'Laptops',
         'image_alt' => 'Laptop category image',
-        'image_src' => 'assets/images/laptops/gaminglaptops.png'
+        'image_src' => 'assets/images/groups/laptops.png'
     ],
     [
         'id' => 2,
         'name' => 'Desktop Computers',
         'image_alt' => 'Desktop Computer category image',
-        'image_src' => 'assets/images/desktops/allinone.png'
+        'image_src' => 'assets/images/groups/desktops.png'
     ],
     [
         'id' => 3,
         'name' => 'PC Components',
         'image_alt' => 'PC Components category image',
-        'image_src' => 'assets/images/components/cabinets.png'
+        'image_src' => 'assets/images/groups/components.png'
     ],
     [
         'id' => 4,
         'name' => 'Displays & Monitors',
         'image_alt' => 'Monitor category image',
-        'image_src' => 'assets/images/displays/curvedmonitor.png'
+        'image_src' => 'assets/images/groups/displays.png'
     ],
     [
         'id' => 5,
         'name' => 'Peripherals & Accessories',
         'image_alt' => 'Peripheral category image',
-        'image_src' => 'assets/images/accessories/headphones.png'
+        'image_src' => 'assets/images/groups/accessories.png'
     ],
     [
-        'id' => 9,
+        'id' => 6,
         'name' => 'Cables & Adapters',
         'image_alt' => 'Cable and Adapter category image',
-        'image_src' => 'assets/images/cables/adapters.jpg'
+        'image_src' => 'assets/images/groups/cables.png'
     ],
 ];
 
@@ -134,14 +134,14 @@ $categories = [
         <?php  
         foreach ($products as $p) {
             $tag = "SALE";
-            $img = $p['image_url'] ?: 'default.png';
+            $img = $p['image_url'] ?: 'assets/images/noimg.png';
 
             echo "
                 <div class='product'>
                     <span class='badge'>{$tag}</span>
                     <img src='{$img}' alt=''>
                     <h4>{$p['product_name']}</h4>
-                    <p class='price'>₹" . number_format(($p['deal_price'] ?? $p['original_price']), 2) . "</p>
+                    <p class='price'>$" . number_format(($p['deal_price'] ?? $p['original_price']), 2) . "</p>
                 </div>
             ";
         }
