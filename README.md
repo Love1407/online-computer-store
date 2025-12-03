@@ -130,6 +130,10 @@ http://localhost:8000/online-computer-store/index.php
 
 Now you can fully navigate through the website and explore product pages, categories, checkout, admin panel, etc.
 
+Admin Details:
+admin@gmail.com
+Password:- admin@123
+
 ---
 
 ## 8. Troubleshooting
