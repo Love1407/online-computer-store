@@ -125,7 +125,7 @@ This allows uploading images/files without permission issues.
 After setup, open the website in your browser:
 
 ```
-http://localhost:8000/online-computer-store/index.php
+http://localhost/online-computer-store/
 ```
 
 Now you can fully navigate through the website and explore product pages, categories, checkout, admin panel, etc.
